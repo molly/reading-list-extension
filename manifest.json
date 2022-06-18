@@ -1,0 +1,21 @@
+{
+  "name": "Reading list",
+  "description": "Add items to my reading lists",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "/build/index.html",
+    "default_icon": {
+      "16": "/build/images/bookmark-16.png",
+      "32": "/build/images/bookmark-32.png",
+      "48": "/build/images/bookmark-48.png",
+      "128": "/build/images/bookmark-128.png"
+    }
+  },
+  "icons": {
+    "16": "/build/images/bookmark-16.png",
+    "32": "/build/images/bookmark-32.png",
+    "48": "/build/images/bookmark-48.png",
+    "128": "/build/images/bookmark-128.png"
+  }
+}
