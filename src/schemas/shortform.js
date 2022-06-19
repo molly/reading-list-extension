@@ -1,43 +1,61 @@
-const shortformSchema = {
-  title: {
+export const shortform = [
+  {
+    fieldName: "title",
+    label: "Title",
     type: "textarea",
     rows: 3,
     required: true,
   },
-  author: {
+  {
+    fieldName: "author",
+    label: "Author",
     type: "textinput",
   },
-  date: {
-    type: "date",
+  { fieldName: "date", label: "Date", type: "date" },
+  {
+    label: "Work",
+    fieldName: "work",
+    type: "textinput",
   },
-  work: {
-    type: "string",
-  },
-  publisher: {
-    type: "string",
-  },
-  workItalics: {
+  {
+    label: "Italicize?",
+    fieldName: "workItalics",
     type: "boolean",
     default: true,
   },
-  preposition: {
+  {
+    label: "Publisher",
+    fieldName: "publisher",
+    type: "textinput",
+  },
+  {
+    label: "Preposition",
+    fieldName: "preposition",
     type: "textinput",
     default: "in",
   },
-  parenthetical: {
+  {
+    label: "Parenthetical",
+    fieldName: "parenthetical",
     type: "textinput",
   },
-  href: {
+  {
+    label: "URL",
+    fieldName: "href",
     type: "textarea",
     rows: 2,
     required: true,
   },
-  tags: {
+  {
+    label: "Tags",
+    fieldName: "tags",
     type: "textarea",
     rows: 2,
     // TODO
   },
-  summary: {
+  {
+    label: "Summary",
+    fieldName: "summary",
     type: "textarea",
     rows: 3,
   },
@@ -45,14 +63,27 @@ const shortformSchema = {
   // relatedReading: {
   //   type: 'array'
   // }
-  started: {
+  {
+    label: "Started",
+    fieldName: "started",
     type: "date",
     required: true,
   },
-  completed: {
+  {
+    label: "Completed",
+    fieldName: "completed",
     type: "date",
   },
-  entryAdded: {
+  {
+    label: "Entry added",
+    fieldName: "entryAdded",
     type: "datetime",
+    required: true,
   },
+];
+
+const schemas = {
+  shortform,
 };
+
+export default schemas;
