@@ -2,7 +2,7 @@ export const shortform = [
   {
     fieldName: "title",
     label: "Title",
-    type: "TextArea",
+    type: "TextField",
     rows: 3,
     required: true,
   },
@@ -58,21 +58,21 @@ export const shortform = [
   {
     label: "URL",
     fieldName: "href",
-    type: "TextArea",
+    type: "TextField",
     rows: 2,
     required: true,
   },
   {
     label: "Tags",
     fieldName: "tags",
-    type: "TextArea",
+    type: "TextField",
     rows: 2,
     // TODO
   },
   {
     label: "Summary",
     fieldName: "summary",
-    type: "TextArea",
+    type: "TextField",
     rows: 3,
   },
   // TODO

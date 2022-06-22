@@ -1,5 +1,11 @@
 import { useCallback, useState } from "react";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Button,
+} from "@mui/material";
 
 import Form from "./Form";
 import { schemas, emptyFormData } from "../schemas";
@@ -22,6 +28,10 @@ export default function Popup() {
     [formData]
   );
 
+  const save = () => {
+    console.log(formData);
+  };
+
   return (
     <div>
       <FormControl fullWidth size="small">
@@ -42,6 +52,9 @@ export default function Popup() {
           formData={formData}
           createFieldSetter={createFieldSetter}
         />
+        <Button onClick={save} variant="contained" sx={{ mt: "10px" }}>
+          Save
+        </Button>
       </FormControl>
     </div>
   );

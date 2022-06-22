@@ -9,11 +9,11 @@ const getDefault = (field) => {
   if ("default" in field) {
     return field.default;
   } else if (field.required) {
-    if (field.type === "date") {
+    if (field.type === "DateField") {
       return moment().format("YYYY-MM-DD");
-    } else if (field.type === "datetime") {
+    } else if (field.type === "DateTimeField") {
       return moment().toISOString();
-    } else if (field.type === "boolean") {
+    } else if (field.type === "BooleanField") {
       return true;
     } else {
       return "";

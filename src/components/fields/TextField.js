@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import PropTypes from "prop-types";
 import { TextField as MuiTextField } from "@mui/material";
 
@@ -8,6 +9,18 @@ export default function TextField({
   sx,
   ...rest
 }) {
+  const multilineProps = useMemo(() => {
+    if (!("rows" in fieldSchema)) {
+      return {};
+    } else {
+      return {
+        minRows: fieldSchema.rows,
+        maxRows: fieldSchema.rows * 2,
+        multiline: true,
+      };
+    }
+  }, [fieldSchema]);
+
   return (
     <MuiTextField
       aria-label={fieldSchema.label}
@@ -16,6 +29,7 @@ export default function TextField({
       value={value || ""}
       size="small"
       sx={{ mt: "10px", ...sx }}
+      {...multilineProps}
       {...rest}
     />
   );
