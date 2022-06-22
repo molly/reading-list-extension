@@ -1,4 +1,4 @@
-export const shortform = [
+const shortform = [
   {
     fieldName: "title",
     label: "Title",
@@ -80,15 +80,23 @@ export const shortform = [
   //   type: 'array'
   // }
   {
-    label: "Started",
-    fieldName: "started",
-    type: "DateField",
-    required: true,
-  },
-  {
-    label: "Completed",
-    fieldName: "completed",
-    type: "DateField",
+    fieldName: "datesGroup",
+    type: "group",
+    fields: [
+      {
+        label: "Started",
+        fieldName: "started",
+        type: "DateField",
+        required: true,
+        sx: { flexGrow: 1, mr: "10px" },
+      },
+      {
+        label: "Completed",
+        fieldName: "completed",
+        type: "DateField",
+        sx: { flexGrow: 1 },
+      },
+    ],
   },
   {
     label: "Entry added",
@@ -98,8 +106,4 @@ export const shortform = [
   },
 ];
 
-const schemas = {
-  shortform,
-};
-
-export default schemas;
+export default shortform;

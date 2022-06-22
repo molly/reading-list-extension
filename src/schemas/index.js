@@ -1,8 +1,12 @@
 import moment from "moment";
-import { shortform } from "./shortform";
+import shortform from "./shortform";
+import blockchain from "./blockchain";
+import press from "./press";
 
 export const schemas = {
   shortform,
+  blockchain,
+  press,
 };
 
 const getDefault = (field) => {
@@ -42,7 +46,10 @@ const createEmptyFormData = (schema) => {
   return data;
 };
 
-export const emptyFormData = ["shortform"].reduce((acc, collection) => {
-  acc[collection] = createEmptyFormData(schemas[collection]);
-  return acc;
-}, {});
+export const emptyFormData = ["shortform", "blockchain", "press"].reduce(
+  (acc, collection) => {
+    acc[collection] = createEmptyFormData(schemas[collection]);
+    return acc;
+  },
+  {}
+);

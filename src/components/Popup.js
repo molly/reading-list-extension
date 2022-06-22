@@ -16,8 +16,8 @@ export default function Popup() {
   const [formData, setFormData] = useState(copy(emptyFormData[collection]));
 
   const changeCollectionType = useCallback((collectionType) => {
-    setCollection(collectionType);
     setFormData(copy(emptyFormData[collectionType]));
+    setCollection(collectionType);
   }, []);
 
   const createFieldSetter = useCallback(
