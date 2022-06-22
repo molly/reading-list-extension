@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 import Form from "./Form";
@@ -9,16 +9,18 @@ export default function Popup() {
   const [collection, setCollection] = useState("shortform");
   const [formData, setFormData] = useState(copy(emptyFormData[collection]));
 
-  useEffect(() => {
-    setFormData(copy(emptyFormData[collection]));
-  }, [collection, setFormData]);
+  const changeCollectionType = useCallback((collectionType) => {
+    setCollection(collectionType);
+    setFormData(copy(emptyFormData[collectionType]));
+  }, []);
 
-  const createFieldSetter =
+  const createFieldSetter = useCallback(
     (field) =>
-    ({ target: { value } }) => {
-      setFormData({ ...formData, [field]: value });
-    };
-  console.log(formData);
+      ({ target: { value } }) => {
+        setFormData({ ...formData, [field]: value });
+      },
+    [formData]
+  );
 
   return (
     <div>
@@ -29,7 +31,7 @@ export default function Popup() {
           id="reading-list-type"
           value={collection}
           label="Reading list"
-          onChange={({ target: { value } }) => setCollection(value)}
+          onChange={({ target: { value } }) => changeCollectionType(value)}
         >
           <MenuItem value="shortform">Shortform</MenuItem>
           <MenuItem value="blockchain">Blockchain</MenuItem>

@@ -9,7 +9,7 @@ export default function BooleanField({
   ...rest
 }) {
   return (
-    <FormGroup sx={{ mt: "10px", ...sx }}>
+    <FormGroup sx={{ mt: "10px", ...sx }} {...rest}>
       <FormControlLabel
         control={<Checkbox checked={value} />}
         label={fieldSchema.label}

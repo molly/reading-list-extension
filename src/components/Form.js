@@ -1,58 +1,62 @@
 import PropTypes from "prop-types";
 
+import { Box } from "@mui/material";
 import Fields from "./fields";
 
-export default function Form({ schema, formData, createFieldSetter }) {
+export default function Form({
+  schema,
+  formData,
+  createFieldSetter,
+  isGrouped,
+}) {
   const renderField = (fieldSchema) => {
-    let FieldComponent = <div>Missing component</div>;
-    let props = {};
+    let FieldComponent;
+    let props = {
+      key: fieldSchema.fieldName,
+      sx: fieldSchema.sx || {},
+    };
 
     if (fieldSchema.type === "group") {
-      FieldComponent = Fields[fieldSchema.customGroup];
-      const fields = Object.keys(fieldSchema.fields).reduce(
-        (acc, fieldName) => {
-          const subfieldSchema = fieldSchema.fields[fieldName];
-          acc[subfieldSchema.fieldName] = { fieldSchema: subfieldSchema };
-          acc[subfieldSchema.fieldName].value =
-            subfieldSchema.fieldName in formData
-              ? formData[subfieldSchema.fieldName]
-              : null;
-          acc[subfieldSchema.fieldName].setField = createFieldSetter(
-            subfieldSchema.fieldName
-          );
-          return acc;
-        },
-        {}
-      );
-      props = { fields };
-    } else {
-      FieldComponent = Fields[fieldSchema.type];
-      const fieldValue =
-        fieldSchema.fieldName in formData
-          ? formData[fieldSchema.fieldName]
-          : null;
-      const setField = createFieldSetter(fieldSchema.fieldName);
-      props = { fieldSchema, value: fieldValue, setField };
-    }
-    if (!FieldComponent) {
       return (
-        <div key="placeholder">{`Placeholder for type ${fieldSchema.type}`}</div>
+        <Form
+          schema={fieldSchema.fields}
+          formData={formData}
+          createFieldSetter={createFieldSetter}
+          isGrouped={true}
+          {...props}
+        />
       );
     }
 
-    return (
-      <FieldComponent
-        key={fieldSchema.fieldName || fieldSchema.customGroup}
-        {...props}
-      />
-    );
+    if (isGrouped) {
+      props.sx.mt = 0;
+    }
+
+    FieldComponent = Fields[fieldSchema.type];
+    props.value =
+      fieldSchema.fieldName in formData
+        ? formData[fieldSchema.fieldName]
+        : null;
+    props.setField = createFieldSetter(fieldSchema.fieldName);
+    props.fieldSchema = fieldSchema;
+
+    return <FieldComponent {...props} />;
   };
 
-  return <>{schema.map((field) => renderField(field))}</>;
+  const fields = <>{schema.map((field) => renderField(field))}</>;
+  if (isGrouped) {
+    return (
+      <Box sx={{ mt: "10px", display: "flex", alignItems: "center" }}>
+        {fields}
+      </Box>
+    );
+  }
+  return fields;
 }
 
 Form.propTypes = {
   schema: PropTypes.array.isRequired,
   formData: PropTypes.object.isRequired,
   createFieldSetter: PropTypes.func.isRequired,
+  isGrouped: PropTypes.bool,
 };

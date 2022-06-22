@@ -13,37 +13,47 @@ export const shortform = [
   },
   { fieldName: "date", label: "Date", type: "DateField" },
   {
+    fieldName: "workGroup",
     type: "group",
-    customGroup: "WorkField",
-    fields: {
-      workField: {
+    fields: [
+      {
+        label: "Preposition",
+        fieldName: "preposition",
+        type: "TextField",
+        default: "in",
+        sx: { maxWidth: "100px", mr: "16px" },
+      },
+      {
         label: "Work",
         fieldName: "work",
         type: "TextField",
+        sx: { flexGrow: 1, mr: "16px" },
       },
-      workItalicsField: {
+      {
         label: "Italicize?",
         fieldName: "workItalics",
         type: "BooleanField",
         default: true,
+        sx: { mr: 0 },
       },
-    },
+    ],
   },
   {
-    label: "Publisher",
-    fieldName: "publisher",
-    type: "TextField",
-  },
-  {
-    label: "Preposition",
-    fieldName: "preposition",
-    type: "TextField",
-    default: "in",
-  },
-  {
-    label: "Parenthetical",
-    fieldName: "parenthetical",
-    type: "TextField",
+    fieldName: "publisherGroup",
+    type: "group",
+    fields: [
+      {
+        label: "Publisher",
+        fieldName: "publisher",
+        type: "TextField",
+        sx: { flexGrow: 1, mr: "16px" },
+      },
+      {
+        label: "Parenthetical",
+        fieldName: "parenthetical",
+        type: "TextField",
+      },
+    ],
   },
   {
     label: "URL",
