@@ -5,20 +5,37 @@ export const schemas = {
   shortform,
 };
 
+const getDefault = (field) => {
+  if ("default" in field) {
+    return field.default;
+  } else if (field.required) {
+    if (field.type === "date") {
+      return moment().format("YYYY-MM-DD");
+    } else if (field.type === "datetime") {
+      return moment().toISOString();
+    } else if (field.type === "boolean") {
+      return true;
+    } else {
+      return "";
+    }
+  }
+  return null;
+};
+
 const createEmptyFormData = (schema) => {
   const data = {};
   for (let field of schema) {
-    if (field.default) {
-      data[field.fieldName] = field.default;
-    } else if (field.required) {
-      if (field.type === "date") {
-        data[field.fieldName] = moment().format("YYYY-MM-DD");
-      } else if (field.type === "datetime") {
-        data[field.fieldName] = moment().toISOString();
-      } else if (data.type === "boolean") {
-        data[field.fieldName] = true;
-      } else {
-        data[field.fieldName] = "";
+    if (field.type === "group") {
+      for (const key of Object.keys(field.fields)) {
+        const defaultValue = getDefault(field.fields[key]);
+        if (defaultValue !== null) {
+          data[field.fields[key].fieldName] = defaultValue;
+        }
+      }
+    } else {
+      const defaultValue = getDefault(field);
+      if (defaultValue !== null) {
+        data[field.fieldName] = defaultValue;
       }
     }
   }

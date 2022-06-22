@@ -5,15 +5,17 @@ export default function BooleanField({
   fieldSchema,
   value,
   setField,
+  sx,
   ...rest
 }) {
   return (
-    <FormGroup>
+    <FormGroup sx={{ mt: "10px", ...sx }}>
       <FormControlLabel
         control={<Checkbox checked={value} />}
         label={fieldSchema.label}
-        ariaLabel={fieldSchema.label}
+        aria-label={fieldSchema.label}
         onChange={setField}
+        sx={{ mr: 0 }}
       />
     </FormGroup>
   );
@@ -21,6 +23,7 @@ export default function BooleanField({
 
 BooleanField.propTypes = {
   fieldSchema: PropTypes.object.isRequired,
-  value: PropTypes.string,
+  value: PropTypes.bool,
   setField: PropTypes.func.isRequired,
+  sx: PropTypes.object,
 };

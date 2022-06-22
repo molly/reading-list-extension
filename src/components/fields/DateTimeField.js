@@ -1,29 +1,34 @@
 import { useMemo } from "react";
 import PropTypes from "prop-types";
 import { TextField } from "@mui/material";
+import { isIsoDate } from "../../js/utils";
 
-export default function DateField({ fieldSchema, value, setField, ...rest }) {
-  const isValid = useMemo(
-    () => !value || /^(\d{4}(-\d{2}(-\d{2})?)?)?$/m.test(value),
-    [value]
-  );
+export default function DateTimeField({
+  fieldSchema,
+  value,
+  setField,
+  sx,
+  ...rest
+}) {
+  const isValid = useMemo(() => !value || isIsoDate(value), [value]);
 
   return (
     <TextField
-      ariaLabel={fieldSchema.label}
+      aria-label={fieldSchema.label}
       label={fieldSchema.label}
       onChange={setField}
-      value={value}
+      value={value || ""}
       size="small"
-      sx={{ marginTop: "10px" }}
+      sx={{ mt: "10px", ...sx }}
       error={!isValid}
       {...rest}
     />
   );
 }
 
-DateField.propTypes = {
+DateTimeField.propTypes = {
   fieldSchema: PropTypes.object.isRequired,
   value: PropTypes.string,
   setField: PropTypes.func.isRequired,
+  sx: PropTypes.object,
 };

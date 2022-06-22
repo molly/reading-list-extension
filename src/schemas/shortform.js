@@ -2,61 +2,67 @@ export const shortform = [
   {
     fieldName: "title",
     label: "Title",
-    type: "textarea",
+    type: "TextArea",
     rows: 3,
     required: true,
   },
   {
     fieldName: "author",
     label: "Author",
-    type: "textinput",
+    type: "TextField",
   },
-  { fieldName: "date", label: "Date", type: "date" },
+  { fieldName: "date", label: "Date", type: "DateField" },
   {
-    label: "Work",
-    fieldName: "work",
-    type: "textinput",
-  },
-  {
-    label: "Italicize?",
-    fieldName: "workItalics",
-    type: "boolean",
-    default: true,
+    type: "group",
+    customGroup: "WorkField",
+    fields: {
+      workField: {
+        label: "Work",
+        fieldName: "work",
+        type: "TextField",
+      },
+      workItalicsField: {
+        label: "Italicize?",
+        fieldName: "workItalics",
+        type: "BooleanField",
+        default: true,
+      },
+    },
   },
   {
     label: "Publisher",
     fieldName: "publisher",
-    type: "textinput",
+    type: "TextField",
   },
   {
     label: "Preposition",
     fieldName: "preposition",
-    type: "textinput",
+    type: "TextField",
     default: "in",
   },
   {
     label: "Parenthetical",
     fieldName: "parenthetical",
-    type: "textinput",
+    type: "TextField",
   },
   {
     label: "URL",
     fieldName: "href",
-    type: "textarea",
+    type: "TextArea",
     rows: 2,
     required: true,
   },
   {
     label: "Tags",
     fieldName: "tags",
-    type: "textarea",
+    type: "TextArea",
     rows: 2,
     // TODO
   },
   {
     label: "Summary",
     fieldName: "summary",
-    type: "textarea",
+    type: "TextArea",
     rows: 3,
   },
   // TODO
@@ -66,18 +72,18 @@ export const shortform = [
   {
     label: "Started",
     fieldName: "started",
-    type: "date",
+    type: "DateField",
     required: true,
   },
   {
     label: "Completed",
     fieldName: "completed",
-    type: "date",
+    type: "DateField",
   },
   {
     label: "Entry added",
     fieldName: "entryAdded",
-    type: "datetime",
+    type: "DateTimeField",
     required: true,
   },
 ];
