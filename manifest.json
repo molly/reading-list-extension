@@ -17,5 +17,13 @@
     "32": "/build/images/bookmark-32.png",
     "48": "/build/images/bookmark-48.png",
     "128": "/build/images/bookmark-128.png"
-  }
+  },
+  "permissions": [
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ]
 }

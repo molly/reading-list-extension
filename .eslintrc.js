@@ -2,6 +2,7 @@ module.exports = {
   env: {
     commonjs: true,
     es6: true,
+    webextensions: true,
   },
   extends: ["eslint:recommended", "prettier", "react-app"],
   plugins: ["prettier"],

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -10,22 +10,41 @@ import {
 import Form from "./Form";
 import { schemas, emptyFormData } from "../schemas";
 import { copy } from "../js/utils";
+import { getPrefillData } from "../js/prefill";
 
 export default function Popup() {
   const [collection, setCollection] = useState("shortform");
-  const [formData, setFormData] = useState(copy(emptyFormData[collection]));
+  const [formData, setFormData] = useState(null);
 
-  const changeCollectionType = useCallback((collectionType) => {
-    setFormData(copy(emptyFormData[collectionType]));
-    setCollection(collectionType);
+  const prefill = useCallback((collectionType) => {
+    const initialFormData = copy(emptyFormData[collectionType]);
+    getPrefillData(collectionType, initialFormData).then((data) => {
+      setFormData(data);
+    });
   }, []);
+
+  useEffect(() => {
+    prefill(collection);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const changeCollectionType = useCallback(
+    (collectionType) => {
+      setCollection(collectionType);
+      prefill(collectionType);
+    },
+    [prefill]
+  );
 
   const createFieldSetter = useCallback(
     (field) =>
       ({ target: { value } }) => {
-        setFormData({ ...formData, [field]: value });
+        setFormData((previousFormData) => ({
+          ...previousFormData,
+          [field]: value,
+        }));
       },
-    [formData]
+    []
   );
 
   const save = () => {
@@ -47,11 +66,13 @@ export default function Popup() {
           <MenuItem value="blockchain">Blockchain</MenuItem>
           <MenuItem value="press">Press</MenuItem>
         </Select>
-        <Form
-          schema={schemas[collection]}
-          formData={formData}
-          createFieldSetter={createFieldSetter}
-        />
+        {formData && (
+          <Form
+            schema={schemas[collection]}
+            formData={formData}
+            createFieldSetter={createFieldSetter}
+          />
+        )}
         <Button onClick={save} variant="contained" sx={{ mt: "10px" }}>
           Save
         </Button>
