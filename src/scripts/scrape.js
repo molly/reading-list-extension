@@ -1,11 +1,11 @@
-const normalizeString = (str) => {
+export const normalizeString = (str) => {
   if (typeof str === "string") {
-    return str.replace(/‘’/g, "'").replace(/“”/g, '"');
+    return str.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
   }
   return str;
 };
 
-const humanizeList = (list) => {
+export const humanizeList = (list) => {
   if (!Array.isArray(list) || list.length === 0) {
     return "";
   } else if (list.length === 1) {
@@ -13,7 +13,7 @@ const humanizeList = (list) => {
   } else if (list.length === 2) {
     return `${list[0]} and ${list[1]}`;
   } else {
-    return `${list.slice(0, -1).join(", ")} and ${list[list.length - 1]}`;
+    return `${list.slice(0, -1).join(", ")}, and ${list[list.length - 1]}`;
   }
 };
 

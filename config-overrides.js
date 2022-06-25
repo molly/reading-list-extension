@@ -4,7 +4,15 @@ module.exports = {
   webpack: override(
     addWebpackPlugin(
       new CopyWebpackPlugin({
-        patterns: [{ from: "src/scripts", to: "scripts" }],
+        patterns: [
+          {
+            from: "src/scripts",
+            to: "scripts",
+            globOptions: {
+              ignore: ["**/*.test.js"],
+            },
+          },
+        ],
       })
     )
   ),
