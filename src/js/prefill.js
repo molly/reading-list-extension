@@ -7,7 +7,7 @@ export const getPrefillData = async (collection, formData) => {
   try {
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId: tabDetails.id },
-      files: ["build/scrape.js"],
+      files: ["build/scripts/scrape.js"],
     });
     return { ...formData, ...prefillData, ...result };
   } catch (err) {
