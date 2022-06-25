@@ -1,11 +1,11 @@
-export const normalizeString = (str) => {
+const normalizeString = (str) => {
   if (typeof str === "string") {
     return str.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
   }
   return str;
 };
 
-export const humanizeList = (list) => {
+const humanizeList = (list) => {
   if (!Array.isArray(list) || list.length === 0) {
     return "";
   } else if (list.length === 1) {
@@ -17,7 +17,7 @@ export const humanizeList = (list) => {
   }
 };
 
-export const getDateFromIsoString = (isoString) => {
+const getDateFromIsoString = (isoString) => {
   if (typeof isoString === "string") {
     const match = isoString.match(/^(\d{4}-\d{2}-\d{2})/);
     if (match && match.length) {
@@ -27,7 +27,7 @@ export const getDateFromIsoString = (isoString) => {
   return null;
 };
 
-export const getDataFromSchema = (schema) => {
+const getDataFromSchema = (schema) => {
   const results = {};
 
   // Title
