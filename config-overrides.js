@@ -8,9 +8,6 @@ module.exports = {
           {
             from: "src/scripts",
             to: "scripts",
-            globOptions: {
-              ignore: ["**/*.test.js"],
-            },
           },
         ],
       })

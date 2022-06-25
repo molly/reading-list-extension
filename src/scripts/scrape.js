@@ -17,16 +17,9 @@ export const humanizeList = (list) => {
   }
 };
 
-const getDataFromSchema = () => {
+export const getDataFromSchema = (schema) => {
   const results = {};
-  const schemaNode = document.evaluate(
-    "//script[contains(text(),'http://schema.org')]",
-    document,
-    null,
-    XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null
-  ).singleNodeValue;
-  const schema = JSON.parse(schemaNode.innerHTML);
+
   // Title
   if ("headline" in schema) {
     results.title = normalizeString(schema.headline);
@@ -52,10 +45,24 @@ const getDataFromSchema = () => {
   return results;
 };
 
+const getSchema = () => {
+  const schemaNode = document.evaluate(
+    "//script[contains(text(),'http://schema.org')]",
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue;
+  return JSON.parse(schemaNode.innerHTML);
+};
+
 const scrapePage = () => {
   let results = {};
   try {
-    results = { ...getDataFromSchema() };
+    const schema = getSchema();
+    if (schema) {
+      results = { ...getDataFromSchema(schema) };
+    }
   } catch (err) {
     // Continue to fallback methods
   }
