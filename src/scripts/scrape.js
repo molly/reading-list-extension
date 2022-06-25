@@ -1,5 +1,3 @@
-import moment from "moment";
-
 export const normalizeString = (str) => {
   if (typeof str === "string") {
     return str.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
@@ -85,10 +83,12 @@ const scrapePage = () => {
   let results = {};
   try {
     const schema = getSchema();
+    console.log(schema);
     if (schema) {
       results = { ...getDataFromSchema(schema) };
     }
   } catch (err) {
+    console.log(err);
     // Continue to fallback methods
   }
   return results;
@@ -102,4 +102,5 @@ const scrapePage = () => {
   // return scrapedData;
 };
 
+console.log("hi");
 scrapePage();
