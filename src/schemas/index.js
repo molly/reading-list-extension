@@ -9,7 +9,7 @@ export const schemas = {
   press,
 };
 
-const getDefault = (field) => {
+export const getDefault = (field) => {
   if ("default" in field) {
     return field.default;
   } else if (field.required) {
@@ -26,7 +26,7 @@ const getDefault = (field) => {
   return null;
 };
 
-const createEmptyFormData = (schema) => {
+export const createEmptyFormData = (schema) => {
   const data = {};
   for (let field of schema) {
     if (field.type === "group") {
@@ -49,6 +49,26 @@ const createEmptyFormData = (schema) => {
 export const emptyFormData = ["shortform", "blockchain", "press"].reduce(
   (acc, collection) => {
     acc[collection] = createEmptyFormData(schemas[collection]);
+    return acc;
+  },
+  {}
+);
+
+export const getFields = (schema) => {
+  let fields = [];
+  for (const field of schema) {
+    if (field.type === "group") {
+      fields = fields.concat(getFields(field.fields));
+    } else {
+      fields.push(field.fieldName);
+    }
+  }
+  return fields;
+};
+
+export const fields = ["shortform", "blockchain", "press"].reduce(
+  (acc, collection) => {
+    acc[collection] = getFields(schemas[collection]);
     return acc;
   },
   {}

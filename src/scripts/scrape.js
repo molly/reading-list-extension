@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const normalizeString = (str) => {
   if (typeof str === "string") {
     return str.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
@@ -15,6 +17,16 @@ export const humanizeList = (list) => {
   } else {
     return `${list.slice(0, -1).join(", ")}, and ${list[list.length - 1]}`;
   }
+};
+
+export const getDateFromIsoString = (isoString) => {
+  if (typeof isoString === "string") {
+    const match = isoString.match(/^(\d{4}-\d{2}-\d{2})/);
+    if (match && match.length) {
+      return match[0];
+    }
+  }
+  return null;
 };
 
 export const getDataFromSchema = (schema) => {
@@ -42,6 +54,19 @@ export const getDataFromSchema = (schema) => {
   } else if ("isPartOf" in schema && "name" in schema.isPartOf) {
     results.work = normalizeString(schema.isPartOf.name);
   }
+
+  // Date
+  if ("dateModified" in schema) {
+    results.date = getDateFromIsoString(schema.dateModified);
+  } else if ("datePublished" in schema) {
+    results.date = getDateFromIsoString(schema.datePublished);
+  }
+
+  // Summary
+  if ("description" in schema) {
+    results.summary = normalizeString(schema.description);
+  }
+
   return results;
 };
 

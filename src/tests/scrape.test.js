@@ -1,6 +1,7 @@
 import {
   normalizeString,
   humanizeList,
+  getDateFromIsoString,
   getDataFromSchema,
 } from "../scripts/scrape";
 import { BASIC_SCHEMA } from "./scrape.data";
@@ -35,6 +36,15 @@ it("humanize doesn't explode on unexpected input", () => {
   expect(humanizeList(15)).toEqual("");
 });
 
+it("parses dates and datetimes into dates", () => {
+  expect(getDateFromIsoString("2022-06-25T18:24:06+0000")).toEqual(
+    "2022-06-25"
+  );
+  expect(getDateFromIsoString("2022-06-25")).toEqual("2022-06-25");
+  expect(getDateFromIsoString(null)).toEqual(null);
+  expect(getDateFromIsoString("foo")).toEqual(null);
+});
+
 it("produces expected output from basic schema", () => {
   const results = getDataFromSchema(BASIC_SCHEMA);
   expect(results.title).toEqual(
@@ -42,4 +52,8 @@ it("produces expected output from basic schema", () => {
   );
   expect(results.author).toEqual("Steven Zeitchik and Rachel Lerman");
   expect(results.work).toEqual("The Washington Post");
+  expect(results.date).toEqual("2022-06-21");
+  expect(results.summary).toEqual(
+    "A disruptive company with a charismatic leader threw a lot of wealth into uncertainty — and vividly demonstrates the end of the crypto party."
+  );
 });

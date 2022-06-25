@@ -9,6 +9,7 @@ export const getPrefillData = async (collection, formData) => {
       target: { tabId: tabDetails.id },
       files: ["build/scripts/scrape.js"],
     });
+
     return { ...formData, ...prefillData, ...result };
   } catch (err) {
     return { ...formData, ...prefillData };

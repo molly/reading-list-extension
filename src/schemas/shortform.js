@@ -11,7 +11,7 @@ const shortform = [
     label: "Author",
     type: "TextField",
   },
-  { fieldName: "date", label: "Date", type: "DateField" },
+  { fieldName: "date", label: "Date", type: "DateField", required: true },
   {
     fieldName: "workGroup",
     type: "group",
