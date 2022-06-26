@@ -1,20 +1,32 @@
-export const getPrefillData = async (collection, formData) => {
+import { FIELDS } from "../schemas";
+
+export const getPrefillData = async () => {
   const [tabDetails] = await chrome.tabs.query({ active: true });
-  const prefillData = { href: tabDetails.url };
+  let prefillData = { href: tabDetails.url };
   if (!tabDetails || !tabDetails.id) {
-    return { ...formData, ...prefillData };
+    return prefillData;
   }
   try {
-    const tmp = await chrome.scripting.executeScript({
+    const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId: tabDetails.id },
       files: ["build/scrape.js"],
     });
-    console.log(tmp);
-    const result = tmp[0].result;
-    console.log(result);
 
-    return { ...formData, ...prefillData, ...result };
+    if (result) {
+      prefillData = { ...prefillData, ...result };
+    }
   } catch (err) {
-    return { ...formData, ...prefillData };
+    console.log(err);
+    return prefillData;
   }
+  return prefillData;
+};
+
+export const filterPrefillData = (prefillData, collection) => {
+  return FIELDS[collection].reduce((acc, field) => {
+    if (field in prefillData) {
+      acc[field] = prefillData[field];
+    }
+    return acc;
+  }, {});
 };

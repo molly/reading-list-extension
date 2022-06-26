@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import {
   FormControl,
   InputLabel,
@@ -8,32 +8,43 @@ import {
 } from "@mui/material";
 
 import Form from "./Form";
-import { schemas, emptyFormData } from "../schemas";
+import { SCHEMAS, EMPTY_FORM_DATA } from "../schemas";
 import { copy } from "../js/utils";
-import { getPrefillData } from "../js/prefill";
+import { filterPrefillData, getPrefillData } from "../js/prefill";
 
 export default function Popup() {
+  const [prefillData, setPrefillData] = useState(null);
   const [collection, setCollection] = useState("shortform");
   const [formData, setFormData] = useState(null);
 
-  const prefill = useCallback((collectionType) => {
-    const initialFormData = copy(emptyFormData[collectionType]);
-    getPrefillData(collectionType, initialFormData).then((data) => {
-      setFormData(data);
-    });
-  }, []);
-
   useEffect(() => {
-    prefill(collection);
+    const initialFormData = copy(EMPTY_FORM_DATA[collection]);
+    getPrefillData().then((data) => {
+      setPrefillData(data);
+      const filteredPrefillData = filterPrefillData(data, collection);
+      setFormData({ ...initialFormData, ...filteredPrefillData });
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const updateEmptyDataOnCollectionChange = useCallback(
+    (collectionType) => {
+      const initialFormData = copy(EMPTY_FORM_DATA[collectionType]);
+      const filteredPrefillData = filterPrefillData(
+        prefillData,
+        collectionType
+      );
+      setFormData({ ...initialFormData, ...filteredPrefillData });
+    },
+    [prefillData]
+  );
 
   const changeCollectionType = useCallback(
     (collectionType) => {
       setCollection(collectionType);
-      prefill(collectionType);
+      updateEmptyDataOnCollectionChange(collectionType);
     },
-    [prefill]
+    [updateEmptyDataOnCollectionChange]
   );
 
   const createFieldSetter = useCallback(
@@ -68,7 +79,7 @@ export default function Popup() {
         </Select>
         {formData && (
           <Form
-            schema={schemas[collection]}
+            schema={SCHEMAS[collection]}
             formData={formData}
             createFieldSetter={createFieldSetter}
           />

@@ -3,7 +3,7 @@ import shortform from "./shortform";
 import blockchain from "./blockchain";
 import press from "./press";
 
-export const schemas = {
+export const SCHEMAS = {
   shortform,
   blockchain,
   press,
@@ -46,9 +46,9 @@ export const createEmptyFormData = (schema) => {
   return data;
 };
 
-export const emptyFormData = ["shortform", "blockchain", "press"].reduce(
+export const EMPTY_FORM_DATA = ["shortform", "blockchain", "press"].reduce(
   (acc, collection) => {
-    acc[collection] = createEmptyFormData(schemas[collection]);
+    acc[collection] = createEmptyFormData(SCHEMAS[collection]);
     return acc;
   },
   {}
@@ -66,9 +66,9 @@ export const getFields = (schema) => {
   return fields;
 };
 
-export const fields = ["shortform", "blockchain", "press"].reduce(
+export const FIELDS = ["shortform", "blockchain", "press"].reduce(
   (acc, collection) => {
-    acc[collection] = getFields(schemas[collection]);
+    acc[collection] = getFields(SCHEMAS[collection]);
     return acc;
   },
   {}
