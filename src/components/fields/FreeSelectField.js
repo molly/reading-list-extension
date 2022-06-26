@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, List, TextField } from "@mui/material";
 import { useState } from "react";
 
 const makeOptionFromValue = (option) => {
@@ -40,11 +40,10 @@ export default function FreeSelectField({
     <Autocomplete
       onChange={handleChange}
       value={fullValue}
-      multiple={fieldSchema.multi}
-      freeSolo={true}
       getOptionLabel={(option) => option.text}
       options={fieldSchema.options}
-      filterSelectedOptions={true}
+      multiple={fieldSchema.multi}
+      freeSolo={true}
       renderInput={(params) => <TextField {...params} placeholder="Tags" />}
       sx={{ mt: "10px", ...sx }}
       size="small"

@@ -1,9 +1,26 @@
-const normalizeString = (str) => {
+const normalizeString = (str, options = {}) => {
+  let newStr = str;
   if (typeof str === "string") {
-    return str.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
+    newStr = newStr.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
+
+    if (options.titlecase) {
+      newStr = newStr
+        .toLocaleLowerCase()
+        .split(" ")
+        .map((word) => {
+          if (word.length > 0) {
+            return word[0].toUpperCase() + word.slice(1);
+          }
+          return word;
+        })
+        .join(" ");
+    }
   }
-  return str;
+  return newStr;
 };
+
+const hasLowercaseCharacters = (str) =>
+  str.split("").some((char) => char === char.toLocaleLowerCase());
 
 const humanizeList = (list) => {
   if (!Array.isArray(list) || list.length === 0) {
@@ -32,7 +49,9 @@ const getDataFromSchema = (schema) => {
 
   // Title
   if ("headline" in schema) {
-    results.title = normalizeString(schema.headline);
+    results.title = normalizeString(schema.headline, {
+      titlecase: !hasLowercaseCharacters(schema.headline),
+    });
   }
 
   // Authors
@@ -40,7 +59,11 @@ const getDataFromSchema = (schema) => {
     let authors = [];
     for (let author of schema.author) {
       if ("name" in author) {
-        authors.push(normalizeString(author.name));
+        authors.push(
+          normalizeString(author.name, {
+            titlecase: !hasLowercaseCharacters(author.name),
+          })
+        );
       }
     }
     results.author = humanizeList(authors);
@@ -48,9 +71,13 @@ const getDataFromSchema = (schema) => {
 
   // Work
   if ("publisher" in schema && "name" in schema.publisher) {
-    results.work = normalizeString(schema.publisher.name);
+    results.work = normalizeString(schema.publisher.name, {
+      titlecase: !hasLowercaseCharacters(schema.publisher),
+    });
   } else if ("isPartOf" in schema && "name" in schema.isPartOf) {
-    results.work = normalizeString(schema.isPartOf.name);
+    results.work = normalizeString(schema.isPartOf.name, {
+      titlecase: !hasLowercaseCharacters(schema.isPartOf.name),
+    });
   }
 
   // Date
@@ -87,18 +114,72 @@ const scrapePage = () => {
       results = { ...getDataFromSchema(schema) };
     }
   } catch (err) {
-    console.log(err);
-    // Continue to fallback methods
+    // Malformed JSON, fall back to other scraping methods
   }
+
+  if (!("title" in results)) {
+    const titleTag = document.querySelector(
+      'meta[property="og:title"], meta[property="twitter:title"], meta[name="twitter:title"]'
+    );
+    if (titleTag) {
+      const title = titleTag.getAttribute("content");
+      results.title = normalizeString(title, {
+        titlecase: !hasLowercaseCharacters(title),
+      });
+    }
+  }
+
+  if (!("author" in results)) {
+    const authorTag = document.querySelector('meta[name="author"]');
+    if (authorTag) {
+      const author = authorTag.getAttribute("content");
+      results.author = normalizeString(author, {
+        titlecase: !hasLowercaseCharacters(author),
+      });
+    }
+  }
+
+  if (!("work" in results)) {
+    const publisherTag = document.querySelector(
+      'meta[property="og:site_name"]'
+    );
+    if (publisherTag) {
+      const publisher = publisherTag.getAttribute("content");
+      results.work = normalizeString(publisher, {
+        titlecase: !hasLowercaseCharacters(publisher),
+      });
+    }
+  }
+
+  if (!("date" in results)) {
+    const dateTag = document.querySelector(
+      'meta[name="article.updated"], meta[itemProp="dateModified"], meta[name="article.published"], meta[itemProp="datePublished"], meta[itemProp="dateLastPubbed"]'
+    );
+    if (dateTag) {
+      results.date = getDateFromIsoString(dateTag.getAttribute("content"));
+    }
+  }
+
+  if (!("summary" in results)) {
+    const summaryTag = document.querySelector(
+      'meta[name="article.summary"], meta[property="og:description"], meta[name="twitter:description"]'
+    );
+    if (summaryTag) {
+      results.summary = normalizeString(summaryTag.getAttribute("content"));
+    }
+  }
+
+  if (
+    document.documentElement.lang &&
+    !document.documentElement.lang.toLowerCase().startsWith("en")
+  ) {
+    const languageNames = new Intl.DisplayNames(["en"], { type: "language" });
+    results.parenthetical = `in ${languageNames.of(
+      document.documentElement.lang.toUpperCase()
+    )}`;
+  }
+
   return results;
-  // const scrapedData = {};
-  // const shareTitleTags = document.querySelector(
-  //   'meta[property="og:title"], meta[property="twitter:title"], meta[name="twitter:title"]'
-  // );
-  // if (shareTitleTags) {
-  //   scrapedData.title = normalize(shareTitleTags.getAttribute("content"));
-  // }
-  // return scrapedData;
 };
 
 scrapePage();

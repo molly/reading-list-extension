@@ -3,7 +3,7 @@ const shortform = [
     fieldName: "title",
     label: "Title",
     type: "TextField",
-    rows: 3,
+    rows: 2,
     required: true,
   },
   {
@@ -11,7 +11,13 @@ const shortform = [
     label: "Author",
     type: "TextField",
   },
-  { fieldName: "date", label: "Date", type: "DateField", required: true },
+  {
+    fieldName: "date",
+    label: "Date",
+    type: "DateField",
+    required: true,
+    default: "",
+  },
   {
     fieldName: "workGroup",
     type: "group",
