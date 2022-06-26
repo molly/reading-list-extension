@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  Box,
+  CircularProgress,
   FormControl,
   InputLabel,
   Select,
@@ -53,7 +55,6 @@ export default function Popup() {
     [updateEmptyDataOnCollectionChange]
   );
 
-  console.log(formData);
   const createFieldSetter = useCallback(
     (field) => (value) => {
       setFormData((previousFormData) => ({
@@ -64,10 +65,27 @@ export default function Popup() {
     []
   );
 
+  const isLoading = useMemo(() => !formData || !allTags, [formData, allTags]);
+
   const save = () => {
     console.log(formData);
   };
 
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "600px",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
     <div>
       <FormControl fullWidth size="small">
@@ -84,14 +102,12 @@ export default function Popup() {
           <MenuItem value="blockchain">Blockchain</MenuItem>
           <MenuItem value="press">Press</MenuItem>
         </Select>
-        {formData && allTags && (
-          <Form
-            schema={SCHEMAS[collection]}
-            tags={allTags[collection]}
-            formData={formData}
-            createFieldSetter={createFieldSetter}
-          />
-        )}
+        <Form
+          schema={SCHEMAS[collection]}
+          tags={allTags[collection]}
+          formData={formData}
+          createFieldSetter={createFieldSetter}
+        />
         <Button onClick={save} variant="contained" sx={{ mt: "10px" }}>
           Save
         </Button>
