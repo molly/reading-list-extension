@@ -1,4 +1,5 @@
 import { FIELDS } from "../schemas";
+import { getApiUrl } from "./constants";
 
 export const getPrefillData = async () => {
   const [tabDetails] = await chrome.tabs.query({ active: true });
@@ -29,4 +30,13 @@ export const filterPrefillData = (prefillData, collection) => {
     }
     return acc;
   }, {});
+};
+
+export const getTags = async () => {
+  const response = await fetch(`${getApiUrl()}/tags`);
+  if (response.status === 200) {
+    return await response.json();
+  } else {
+    return [];
+  }
 };

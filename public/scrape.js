@@ -1,5 +1,3 @@
-let schema;
-
 const normalizeString = (str) => {
   if (typeof str === "string") {
     return str.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
@@ -84,9 +82,7 @@ const getSchema = () => {
 const scrapePage = () => {
   let results = {};
   try {
-    if (!schema) {
-      schema = getSchema();
-    }
+    const schema = getSchema();
     if (schema) {
       results = { ...getDataFromSchema(schema) };
     }

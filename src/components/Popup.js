@@ -10,10 +10,13 @@ import {
 import Form from "./Form";
 import { SCHEMAS, EMPTY_FORM_DATA } from "../schemas";
 import { copy } from "../js/utils";
-import { filterPrefillData, getPrefillData } from "../js/prefill";
+import { filterPrefillData, getPrefillData, getTags } from "../js/prefill";
 
 export default function Popup() {
+  // Set once per load
   const [prefillData, setPrefillData] = useState(null);
+  const [allTags, setAllTags] = useState(null);
+
   const [collection, setCollection] = useState("shortform");
   const [formData, setFormData] = useState(null);
 
@@ -23,6 +26,9 @@ export default function Popup() {
       setPrefillData(data);
       const filteredPrefillData = filterPrefillData(data, collection);
       setFormData({ ...initialFormData, ...filteredPrefillData });
+    });
+    getTags().then((data) => {
+      setAllTags(data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -47,14 +53,14 @@ export default function Popup() {
     [updateEmptyDataOnCollectionChange]
   );
 
+  console.log(formData);
   const createFieldSetter = useCallback(
-    (field) =>
-      ({ target: { value } }) => {
-        setFormData((previousFormData) => ({
-          ...previousFormData,
-          [field]: value,
-        }));
-      },
+    (field) => (value) => {
+      setFormData((previousFormData) => ({
+        ...previousFormData,
+        [field]: value,
+      }));
+    },
     []
   );
 
@@ -71,15 +77,17 @@ export default function Popup() {
           id="reading-list-type"
           value={collection}
           label="Reading list"
+          MenuProps={{ MenuListProps: { dense: true } }}
           onChange={({ target: { value } }) => changeCollectionType(value)}
         >
           <MenuItem value="shortform">Shortform</MenuItem>
           <MenuItem value="blockchain">Blockchain</MenuItem>
           <MenuItem value="press">Press</MenuItem>
         </Select>
-        {formData && (
+        {formData && allTags && (
           <Form
             schema={SCHEMAS[collection]}
+            tags={allTags[collection]}
             formData={formData}
             createFieldSetter={createFieldSetter}
           />

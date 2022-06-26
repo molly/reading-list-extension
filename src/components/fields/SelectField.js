@@ -16,8 +16,14 @@ export default function SelectField({
       <Select
         labelId={`${fieldSchema.fieldName}-select-label`}
         label={fieldSchema.label}
-        onChange={setField}
-        value={value || ""}
+        onChange={({ target: { value } }) => setField(value)}
+        value={value || (fieldSchema.multi ? [] : "")}
+        multiple={fieldSchema.multi}
+        MenuProps={{
+          sx: { maxHeight: "400px" },
+          MenuListProps: { dense: true },
+        }}
+        autoWidth={true}
         {...rest}
       >
         {fieldSchema.options.map((option) => (

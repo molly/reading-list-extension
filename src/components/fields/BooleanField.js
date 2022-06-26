@@ -14,7 +14,7 @@ export default function BooleanField({
         control={<Checkbox checked={value} />}
         label={fieldSchema.label}
         aria-label={fieldSchema.label}
-        onChange={setField}
+        onChange={({ target: { value } }) => setField(value)}
         sx={{ mr: 0 }}
       />
     </FormGroup>

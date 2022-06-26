@@ -65,9 +65,9 @@ const shortform = [
   {
     label: "Tags",
     fieldName: "tags",
-    type: "TextField",
-    rows: 2,
-    // TODO
+    type: "FreeSelectField",
+    options: null, // Filled dynamically
+    multi: true,
   },
   {
     label: "Summary",

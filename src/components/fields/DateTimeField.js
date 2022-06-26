@@ -16,7 +16,7 @@ export default function DateTimeField({
     <TextField
       aria-label={fieldSchema.label}
       label={fieldSchema.label}
-      onChange={setField}
+      onChange={({ target: { value } }) => setField(value)}
       value={value || ""}
       size="small"
       sx={{ mt: "10px", ...sx }}
