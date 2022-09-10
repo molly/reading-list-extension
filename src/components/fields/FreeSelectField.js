@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Autocomplete, List, TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { useState } from "react";
 
 const makeOptionFromValue = (option) => {

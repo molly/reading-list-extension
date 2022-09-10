@@ -17,4 +17,5 @@ module.exports = {
     "prettier/prettier": ["error", { tabWidth: 2, useTabs: false }],
     "require-await": ["error"],
   },
+  ignorePatterns: ["build/"],
 };
