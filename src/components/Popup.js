@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import LoginPopup from "./LoginPopup";
-import Form from "./Form";
+import NewEntry from "./NewEntry";
 
 export default function Popup() {
   const [user, setUser] = useState(null);
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   if (!user) {
-    return <LoginPopup />;
+    return <LoginPopup setUser={setUser} />;
   }
-  return <Form />;
+  return <NewEntry />;
 }
