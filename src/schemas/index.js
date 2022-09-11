@@ -1,4 +1,4 @@
-import moment from "moment";
+import { DateTime } from "luxon";
 import shortform from "./shortform";
 import blockchain from "./blockchain";
 import press from "./press";
@@ -14,9 +14,9 @@ export const getDefault = (field) => {
     return field.default;
   } else if (field.required) {
     if (field.type === "DateField") {
-      return moment().format("YYYY-MM-DD");
+      return DateTime.now().toISODate();
     } else if (field.type === "DateTimeField") {
-      return moment().toISOString();
+      return DateTime.now().toISO();
     } else if (field.type === "BooleanField") {
       return true;
     } else {
