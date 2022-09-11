@@ -33,10 +33,10 @@ export const filterPrefillData = (prefillData, collection) => {
 };
 
 export const getTags = async () => {
-  const response = await client.get("/tags");
-  if (response.status === 200) {
-    return await response.json();
-  } else {
+  try {
+    const response = await client.get("/tags");
+    return response.data;
+  } catch (err) {
     return [];
   }
 };

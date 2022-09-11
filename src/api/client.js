@@ -7,7 +7,9 @@ export const axiosInstance = axios.create({ baseURL: API_URL });
 
 applyAuthTokenInterceptor(axiosInstance, {
   requestRefresh: async (refreshToken) => {
-    const response = await axios.post(`${API_URL}/auth/refresh`);
+    const response = await axios.post(`${API_URL}/auth/refresh`, {
+      refreshToken,
+    });
     return response.data.accessToken;
   },
 });

@@ -10,8 +10,7 @@ export default function Login({ setUser }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = await signin(username, password);
-    setUser(user);
+    await signin(username, password);
   };
 
   return (

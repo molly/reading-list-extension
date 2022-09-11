@@ -30,6 +30,7 @@ export default function NewEntry() {
       setFormData({ ...initialFormData, ...filteredPrefillData });
     });
     getTags().then((data) => {
+      console.log(data);
       setAllTags(data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
