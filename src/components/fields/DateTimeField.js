@@ -10,7 +10,10 @@ export default function DateTimeField({
   sx,
   ...rest
 }) {
-  const isValid = useMemo(() => !value || isIsoDate(value), [value]);
+  const isValid = useMemo(
+    () => (!value && !fieldSchema.required) || isIsoDate(value),
+    [value, fieldSchema.required]
+  );
 
   return (
     <TextField
@@ -18,6 +21,7 @@ export default function DateTimeField({
       label={fieldSchema.label}
       onChange={({ target: { value } }) => setField(value)}
       value={value || ""}
+      required={fieldSchema.required}
       size="small"
       sx={{ mt: "10px", ...sx }}
       error={!isValid}

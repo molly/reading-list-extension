@@ -14,6 +14,8 @@ import { SCHEMAS, EMPTY_FORM_DATA } from "../schemas";
 import { copy } from "../js/utils";
 import { filterPrefillData, getPrefillData, getTags } from "../js/prefill";
 
+import { addEntry } from "../api/entry";
+
 export default function NewEntry() {
   // Set once per load
   const [prefillData, setPrefillData] = useState(null);
@@ -30,7 +32,6 @@ export default function NewEntry() {
       setFormData({ ...initialFormData, ...filteredPrefillData });
     });
     getTags().then((data) => {
-      console.log(data);
       setAllTags(data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,8 +69,8 @@ export default function NewEntry() {
 
   const isLoading = useMemo(() => !formData || !allTags, [formData, allTags]);
 
-  const save = () => {
-    console.log(formData);
+  const save = async () => {
+    await addEntry(collection, formData);
   };
 
   if (isLoading) {

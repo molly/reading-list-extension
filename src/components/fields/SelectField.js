@@ -19,6 +19,7 @@ export default function SelectField({
         onChange={({ target: { value } }) => setField(value)}
         value={value || (fieldSchema.multi ? [] : "")}
         multiple={fieldSchema.multi}
+        required={fieldSchema.required}
         MenuProps={{
           sx: { maxHeight: "400px" },
           MenuListProps: { dense: true },

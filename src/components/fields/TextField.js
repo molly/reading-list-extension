@@ -21,14 +21,21 @@ export default function TextField({
     }
   }, [fieldSchema]);
 
+  const isValid = useMemo(
+    () => !!value || !fieldSchema.required,
+    [value, fieldSchema.required]
+  );
+
   return (
     <MuiTextField
       aria-label={fieldSchema.label}
       label={fieldSchema.label}
       onChange={({ target: { value } }) => setField(value)}
       value={value || ""}
+      required={fieldSchema.required}
       size="small"
       sx={{ mt: "10px", ...sx }}
+      error={!isValid}
       {...multilineProps}
       {...rest}
     />
