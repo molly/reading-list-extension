@@ -1,6 +1,15 @@
 import { useMemo } from "react";
 import PropTypes from "prop-types";
 import { TextField as MuiTextField } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
+const SecondaryTextField = styled(MuiTextField)({
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#EEEEEE",
+    },
+  },
+});
 
 export default function TextField({
   fieldSchema,
@@ -26,8 +35,11 @@ export default function TextField({
     [value, fieldSchema.required]
   );
 
+  const Field =
+    fieldSchema.importance === "secondary" ? SecondaryTextField : MuiTextField;
+
   return (
-    <MuiTextField
+    <Field
       aria-label={fieldSchema.label}
       label={fieldSchema.label}
       onChange={({ target: { value } }) => setField(value)}

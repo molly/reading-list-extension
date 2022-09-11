@@ -10,12 +10,15 @@ export default function Form({
   createFieldSetter,
   isGrouped,
 }) {
-  const renderField = (fieldSchema) => {
+  const renderField = (fieldSchema, index) => {
     let FieldComponent;
     let props = {
       key: fieldSchema.fieldName,
       sx: fieldSchema.sx || {},
     };
+    if (index === 0) {
+      props.sx.mt = "60px";
+    }
 
     if (fieldSchema.type === "group") {
       return (
@@ -51,7 +54,7 @@ export default function Form({
     return <FieldComponent {...props} />;
   };
 
-  const fields = <>{schema.map((field) => renderField(field))}</>;
+  const fields = <>{schema.map((field, index) => renderField(field, index))}</>;
   if (isGrouped) {
     return (
       <Box sx={{ mt: "10px", display: "flex", alignItems: "center" }}>

@@ -6,8 +6,10 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Button,
+  AppBar,
+  Toolbar,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
 import Form from "./Form";
 import { SCHEMAS, EMPTY_FORM_DATA } from "../schemas";
@@ -23,6 +25,9 @@ export default function NewEntry() {
 
   const [collection, setCollection] = useState("shortform");
   const [formData, setFormData] = useState(null);
+
+  const [saveStatus, setSaveStatus] = useState(null);
+  const [saveError, setSaveError] = useState(null);
 
   useEffect(() => {
     const initialFormData = copy(EMPTY_FORM_DATA[collection]);
@@ -70,7 +75,14 @@ export default function NewEntry() {
   const isLoading = useMemo(() => !formData || !allTags, [formData, allTags]);
 
   const save = async () => {
-    await addEntry(collection, formData);
+    setSaveStatus("loading");
+    const { error } = await addEntry(collection, formData);
+    if (error) {
+      setSaveStatus("error");
+      setSaveError(error);
+    } else {
+      setSaveStatus(null);
+    }
   };
 
   if (isLoading) {
@@ -91,28 +103,45 @@ export default function NewEntry() {
   return (
     <div>
       <FormControl fullWidth size="small">
-        <InputLabel id="reading-list-type-label">Reading list</InputLabel>
-        <Select
-          labelId="reading-list-type-label"
-          id="reading-list-type"
-          value={collection}
-          label="Reading list"
-          MenuProps={{ MenuListProps: { dense: true } }}
-          onChange={({ target: { value } }) => changeCollectionType(value)}
+        <AppBar
+          color={
+            collection === "shortform"
+              ? "primary"
+              : collection === "blockchain"
+              ? "secondary"
+              : "success"
+          }
         >
-          <MenuItem value="shortform">Shortform</MenuItem>
-          <MenuItem value="blockchain">Blockchain</MenuItem>
-          <MenuItem value="press">Press</MenuItem>
-        </Select>
+          <Toolbar>
+            <Select
+              labelId="reading-list-type-label"
+              id="reading-list-type"
+              value={collection}
+              label="Reading list"
+              MenuProps={{ MenuListProps: { dense: true } }}
+              onChange={({ target: { value } }) => changeCollectionType(value)}
+              variant="standard"
+            >
+              <MenuItem value="shortform">Shortform</MenuItem>
+              <MenuItem value="blockchain">Blockchain</MenuItem>
+              <MenuItem value="press">Press</MenuItem>
+            </Select>
+          </Toolbar>
+        </AppBar>
         <Form
           schema={SCHEMAS[collection]}
           tags={allTags[collection]}
           formData={formData}
           createFieldSetter={createFieldSetter}
         />
-        <Button onClick={save} variant="contained" sx={{ mt: "10px" }}>
+        <LoadingButton
+          onClick={save}
+          variant="contained"
+          sx={{ mt: "10px" }}
+          loading={saveStatus === "loading"}
+        >
           Save
-        </Button>
+        </LoadingButton>
       </FormControl>
     </div>
   );

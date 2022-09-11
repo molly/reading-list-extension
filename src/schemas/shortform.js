@@ -29,6 +29,7 @@ const shortform = [
         type: "TextField",
         default: "in",
         sx: { maxWidth: "100px", mr: "16px" },
+        importance: "secondary",
       },
       {
         label: "Work",
@@ -54,11 +55,13 @@ const shortform = [
         fieldName: "publisher",
         type: "TextField",
         sx: { flexGrow: 1, mr: "16px" },
+        importance: "secondary",
       },
       {
         label: "Parenthetical",
         fieldName: "parenthetical",
         type: "TextField",
+        importance: "secondary",
       },
     ],
   },
@@ -80,6 +83,7 @@ const shortform = [
     label: "Summary",
     fieldName: "summary",
     type: "TextField",
+    importance: "secondary",
     rows: 3,
   },
   // TODO
@@ -101,6 +105,7 @@ const shortform = [
         label: "Completed",
         fieldName: "completed",
         type: "DateField",
+        importance: "secondary",
         sx: { flexGrow: 1 },
       },
     ],

@@ -6,6 +6,7 @@ const blockchain = [
     label: "Status",
     fieldName: "status",
     type: "SelectField",
+    importance: "secondary",
     options: [
       { text: "Currently reading", value: "currentlyReading" },
       { text: "Read", value: "read" },
