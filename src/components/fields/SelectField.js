@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { useValidateField } from "../../hooks/useValidateField";
 
 export default function SelectField({
   fieldSchema,
@@ -8,6 +9,8 @@ export default function SelectField({
   sx,
   ...rest
 }) {
+  const isValid = useValidateField(fieldSchema, value);
+
   return (
     <FormControl sx={{ mt: "10px", ...sx }} size="small">
       <InputLabel id={`${fieldSchema.fieldName}-select-label`}>
@@ -25,6 +28,7 @@ export default function SelectField({
           MenuListProps: { dense: true },
         }}
         autoWidth={true}
+        error={!isValid}
         {...rest}
       >
         {fieldSchema.options.map((option) => (

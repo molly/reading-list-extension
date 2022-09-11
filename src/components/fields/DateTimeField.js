@@ -1,7 +1,6 @@
-import { useMemo } from "react";
 import PropTypes from "prop-types";
 import { TextField } from "@mui/material";
-import { isIsoDate } from "../../js/utils";
+import { useValidateField } from "../../hooks/useValidateField";
 
 export default function DateTimeField({
   fieldSchema,
@@ -10,10 +9,7 @@ export default function DateTimeField({
   sx,
   ...rest
 }) {
-  const isValid = useMemo(
-    () => (!value && !fieldSchema.required) || isIsoDate(value),
-    [value, fieldSchema.required]
-  );
+  const isValid = useValidateField(fieldSchema, value);
 
   return (
     <TextField

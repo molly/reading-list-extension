@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { FormGroup, FormControlLabel, Checkbox } from "@mui/material";
+import { useValidateField } from "../../hooks/useValidateField";
 
 export default function BooleanField({
   fieldSchema,
@@ -8,6 +9,8 @@ export default function BooleanField({
   sx,
   ...rest
 }) {
+  const isValid = useValidateField(fieldSchema, value);
+
   return (
     <FormGroup sx={{ mt: "10px", ...sx }} {...rest}>
       <FormControlLabel
@@ -16,6 +19,7 @@ export default function BooleanField({
         aria-label={fieldSchema.label}
         onChange={({ target: { value } }) => setField(value)}
         sx={{ mr: 0 }}
+        error={!isValid}
       />
     </FormGroup>
   );

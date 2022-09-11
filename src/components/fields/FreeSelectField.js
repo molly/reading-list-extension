@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { Autocomplete, TextField } from "@mui/material";
 import { useState } from "react";
+import { useValidateField } from "../../hooks/useValidateField";
 
 const makeOptionFromValue = (option) => {
   if (typeof option === "string") {
@@ -19,6 +20,8 @@ export default function FreeSelectField({
   sx,
   ...rest
 }) {
+  const isValid = useValidateField(fieldSchema, value);
+
   const [fullValue, setFullValue] = useState(
     value || (fieldSchema.multi ? [] : "")
   );
@@ -47,6 +50,7 @@ export default function FreeSelectField({
       renderInput={(params) => <TextField {...params} placeholder="Tags" />}
       sx={{ mt: "10px", ...sx }}
       size="small"
+      error={!isValid}
       {...rest}
     />
   );

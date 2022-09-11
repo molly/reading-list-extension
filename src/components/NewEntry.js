@@ -3,7 +3,6 @@ import {
   Box,
   CircularProgress,
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
   AppBar,
@@ -15,6 +14,7 @@ import Form from "./Form";
 import { SCHEMAS, EMPTY_FORM_DATA } from "../schemas";
 import { copy } from "../js/utils";
 import { filterPrefillData, getPrefillData, getTags } from "../js/prefill";
+import { validate } from "../schemas/validate";
 
 import { addEntry } from "../api/entry";
 
@@ -73,6 +73,11 @@ export default function NewEntry() {
   );
 
   const isLoading = useMemo(() => !formData || !allTags, [formData, allTags]);
+
+  const isValid = useMemo(
+    () => validate(formData, SCHEMAS[collection]),
+    [formData, collection]
+  );
 
   const save = async () => {
     setSaveStatus("loading");
@@ -139,6 +144,7 @@ export default function NewEntry() {
           variant="contained"
           sx={{ mt: "10px" }}
           loading={saveStatus === "loading"}
+          disabled={!isValid}
         >
           Save
         </LoadingButton>

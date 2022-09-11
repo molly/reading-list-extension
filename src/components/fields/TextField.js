@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import PropTypes from "prop-types";
 import { TextField as MuiTextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useValidateField } from "../../hooks/useValidateField";
 
 const SecondaryTextField = styled(MuiTextField)({
   "& .MuiOutlinedInput-root": {
@@ -30,10 +31,7 @@ export default function TextField({
     }
   }, [fieldSchema]);
 
-  const isValid = useMemo(
-    () => !!value || !fieldSchema.required,
-    [value, fieldSchema.required]
-  );
+  const isValid = useValidateField(fieldSchema, value);
 
   const Field =
     fieldSchema.importance === "secondary" ? SecondaryTextField : MuiTextField;

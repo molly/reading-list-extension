@@ -1,3 +1,5 @@
+import { isValidDate, isValidIsoDateTime } from "./validate";
+
 const shortform = [
   {
     fieldName: "title",
@@ -18,6 +20,7 @@ const shortform = [
     type: "DateField",
     required: true,
     default: "",
+    validate: isValidDate,
   },
   {
     fieldName: "workGroup",
@@ -100,6 +103,7 @@ const shortform = [
         type: "DateField",
         required: true,
         sx: { flexGrow: 1, mr: "10px" },
+        validate: isValidDate,
       },
       {
         label: "Completed",
@@ -107,6 +111,7 @@ const shortform = [
         type: "DateField",
         importance: "secondary",
         sx: { flexGrow: 1 },
+        validate: isValidDate,
       },
     ],
   },
@@ -115,6 +120,7 @@ const shortform = [
     fieldName: "entryAdded",
     type: "DateTimeField",
     required: true,
+    validate: isValidIsoDateTime,
   },
 ];
 
