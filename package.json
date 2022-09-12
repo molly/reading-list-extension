@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mui/icons-material": "^5.10.3",
     "@mui/lab": "^5.0.0-alpha.98",
     "@mui/material": "^5.8.4",
     "axios": "^0.27.2",

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  Alert,
   Box,
   CircularProgress,
   FormControl,
@@ -7,8 +8,12 @@ import {
   MenuItem,
   AppBar,
   Toolbar,
+  Typography,
+  Stack,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { LoadingButton } from "@mui/lab";
+import SaveIcon from "@mui/icons-material/Save";
 
 import Form from "./Form";
 import { SCHEMAS, EMPTY_FORM_DATA } from "../schemas";
@@ -18,18 +23,27 @@ import { validate } from "../schemas/validate";
 
 import { addEntry } from "../api/entry";
 
+const OnDarkSelect = styled(Select)({
+  "& .MuiSelect-select": {
+    color: "#FFFFFF",
+  },
+  "& .MuiSvgIcon-root": {
+    color: "#FFFFFF",
+  },
+});
+
 export default function NewEntry() {
-  // Set once per load
   const [prefillData, setPrefillData] = useState(null);
   const [allTags, setAllTags] = useState(null);
 
-  const [collection, setCollection] = useState("shortform");
+  const [collection, setCollection] = useState("blockchain");
   const [formData, setFormData] = useState(null);
 
   const [saveStatus, setSaveStatus] = useState(null);
   const [saveError, setSaveError] = useState(null);
 
   useEffect(() => {
+    // Set once per load
     const initialFormData = copy(EMPTY_FORM_DATA[collection]);
     getPrefillData().then((data) => {
       setPrefillData(data);
@@ -41,6 +55,15 @@ export default function NewEntry() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    // Clear error on field change to allow fix & resubmit
+    if (saveError) {
+      setSaveError(null);
+      setSaveStatus(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData]);
 
   const updateEmptyDataOnCollectionChange = useCallback(
     (collectionType) => {
@@ -84,9 +107,9 @@ export default function NewEntry() {
     const { error } = await addEntry(collection, formData);
     if (error) {
       setSaveStatus("error");
-      setSaveError(error);
+      setSaveError(error.message);
     } else {
-      setSaveStatus(null);
+      setSaveStatus("success");
     }
   };
 
@@ -104,9 +127,33 @@ export default function NewEntry() {
         <CircularProgress />
       </Box>
     );
+  } else if (saveStatus === "success") {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "600px",
+          width: "100%",
+          backgroundColor: "primary.dark",
+        }}
+      >
+        <Stack alignItems="center" spacing={1}>
+          <img
+            src="/build/images/saved.gif"
+            alt="Animated GIF of a woman sitting at a computer amid stacks of books, giving a thumbs up"
+            width="300px"
+          />
+          <Typography variant="h5" sx={{ color: "#FFFFFF" }}>
+            Added to the stack!
+          </Typography>
+        </Stack>
+      </Box>
+    );
   }
   return (
-    <div>
+    <Box sx={{ margin: 2 }}>
       <FormControl fullWidth size="small">
         <AppBar
           color={
@@ -118,7 +165,7 @@ export default function NewEntry() {
           }
         >
           <Toolbar>
-            <Select
+            <OnDarkSelect
               labelId="reading-list-type-label"
               id="reading-list-type"
               value={collection}
@@ -126,11 +173,12 @@ export default function NewEntry() {
               MenuProps={{ MenuListProps: { dense: true } }}
               onChange={({ target: { value } }) => changeCollectionType(value)}
               variant="standard"
+              disableUnderline={true}
             >
               <MenuItem value="shortform">Shortform</MenuItem>
               <MenuItem value="blockchain">Blockchain</MenuItem>
               <MenuItem value="press">Press</MenuItem>
-            </Select>
+            </OnDarkSelect>
           </Toolbar>
         </AppBar>
         <Form
@@ -139,17 +187,23 @@ export default function NewEntry() {
           formData={formData}
           createFieldSetter={createFieldSetter}
         />
+        {!!saveError && (
+          <Alert severity="error" sx={{ mt: "10px" }}>
+            {saveError}
+          </Alert>
+        )}
         <LoadingButton
           onClick={save}
           variant="contained"
           sx={{ mt: "10px" }}
           loading={saveStatus === "loading"}
-          disabled={!isValid}
+          disabled={!isValid || saveStatus !== null}
+          endIcon={<SaveIcon />}
         >
           Save
         </LoadingButton>
       </FormControl>
-    </div>
+    </Box>
   );
 }
 

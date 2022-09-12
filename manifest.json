@@ -26,5 +26,15 @@
   "host_permissions": [
     "http://*/*",
     "https://*/*"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "build/images/saved.gif"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
   ]
 }

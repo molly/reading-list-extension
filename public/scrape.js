@@ -30,9 +30,8 @@
       return list[0];
     } else if (list.length === 2) {
       return `${list[0]} and ${list[1]}`;
-    } else {
-      return `${list.slice(0, -1).join(", ")}, and ${list[list.length - 1]}`;
     }
+    return `${list.slice(0, -1).join(", ")}, and ${list[list.length - 1]}`;
   };
 
   const getDateFromIsoString = (isoString) => {
@@ -45,66 +44,91 @@
     return null;
   };
 
-  const getDataFromSchema = (schema) => {
-    const results = {};
-
-    // Title
-    if ("headline" in schema) {
-      results.title = normalizeString(schema.headline, {
-        titlecase: !hasLowercaseCharacters(schema.headline),
+  const getAuthor = (node) => {
+    if (node.name) {
+      return normalizeString(node.name, {
+        titlecase: !hasLowercaseCharacters(node.name),
       });
     }
+    return null;
+  };
 
-    // Authors
-    if ("author" in schema) {
-      let authors = [];
-      for (let author of schema.author) {
-        if ("name" in author) {
-          authors.push(
-            normalizeString(author.name, {
-              titlecase: !hasLowercaseCharacters(author.name),
-            })
-          );
+  const getDataFromSchema = (schema) => {
+    try {
+      const results = {};
+      // Title
+      if (schema.headline) {
+        results.title = normalizeString(schema.headline, {
+          titlecase: !hasLowercaseCharacters(schema.headline),
+        });
+      }
+
+      // Authors
+      if (schema.author) {
+        if (Array.isArray(schema.author)) {
+          const authors = schema.author
+            .map((authorNode) => getAuthor(authorNode))
+            .filter((el) => !!el);
+          results.author = humanizeList(authors);
+        } else {
+          results.author = getAuthor(schema.author);
         }
       }
-      results.author = humanizeList(authors);
-    }
 
-    // Work
-    if ("publisher" in schema && "name" in schema.publisher) {
-      results.work = normalizeString(schema.publisher.name, {
-        titlecase: !hasLowercaseCharacters(schema.publisher),
-      });
-    } else if ("isPartOf" in schema && "name" in schema.isPartOf) {
-      results.work = normalizeString(schema.isPartOf.name, {
-        titlecase: !hasLowercaseCharacters(schema.isPartOf.name),
-      });
-    }
+      // Work
+      if (schema.publisher?.name) {
+        results.work = normalizeString(schema.publisher.name, {
+          titlecase: !hasLowercaseCharacters(schema.publisher.name),
+        });
+      } else if (schema.isPartOf?.name) {
+        results.work = normalizeString(schema.isPartOf.name, {
+          titlecase: !hasLowercaseCharacters(schema.isPartOf.name),
+        });
+      }
 
-    // Date
-    if ("dateModified" in schema) {
-      results.date = getDateFromIsoString(schema.dateModified);
-    } else if ("datePublished" in schema) {
-      results.date = getDateFromIsoString(schema.datePublished);
-    }
+      // Date
+      if (schema.dateModified) {
+        results.date = getDateFromIsoString(schema.dateModified);
+      } else if (schema.datePublished) {
+        results.date = getDateFromIsoString(schema.datePublished);
+      }
 
-    // Summary
-    if ("description" in schema) {
-      results.summary = normalizeString(schema.description);
-    }
+      // Summary
+      if (schema.description) {
+        results.summary = normalizeString(schema.description);
+      }
 
-    return results;
+      return results;
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const getSchema = () => {
     const schemaNode = document.evaluate(
-      "//script[contains(text(),'http://schema.org')]",
+      "//script[contains(text(),'schema.org')]",
       document,
       null,
       XPathResult.FIRST_ORDERED_NODE_TYPE,
       null
     ).singleNodeValue;
-    return JSON.parse(schemaNode.innerHTML);
+
+    let schema = JSON.parse(schemaNode.innerHTML);
+    if ("@graph" in schema) {
+      schema = schema["@graph"];
+    }
+    if (Array.isArray(schema)) {
+      if (schema.length === 1) {
+        return schema[0];
+      }
+      for (const node of schema) {
+        const nodeType = node["@type"]?.toLowerCase();
+        if (nodeType === "article" || nodeType === "webpage") {
+          return node;
+        }
+      }
+    }
+    return schema;
   };
 
   const scrapePage = () => {
