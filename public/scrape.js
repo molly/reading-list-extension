@@ -114,17 +114,27 @@
     ).singleNodeValue;
 
     let schema = JSON.parse(schemaNode.innerHTML);
+
+    if (Array.isArray(schema) && schema.length === 1) {
+      schema = schema[0];
+    }
     if ("@graph" in schema) {
       schema = schema["@graph"];
     }
     if (Array.isArray(schema)) {
-      if (schema.length === 1) {
-        return schema[0];
-      }
-      for (const node of schema) {
-        const nodeType = node["@type"]?.toLowerCase();
-        if (nodeType === "article" || nodeType === "webpage") {
-          return node;
+      for (const type of [
+        "article",
+        "newsarticle",
+        "report",
+        "scholarlyarticle",
+        "blog",
+        "webpage",
+      ]) {
+        const result = schema.find((s) => {
+          return s["@type"].toLowerCase() === type;
+        });
+        if (result) {
+          return result;
         }
       }
     }
