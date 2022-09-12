@@ -69,12 +69,12 @@ export default function NewEntry() {
     (collectionType) => {
       const initialFormData = copy(EMPTY_FORM_DATA[collectionType]);
       const filteredPrefillData = filterPrefillData(
-        prefillData,
+        { ...prefillData, ...formData },
         collectionType
       );
       setFormData({ ...initialFormData, ...filteredPrefillData });
     },
-    [prefillData]
+    [prefillData, formData]
   );
 
   const changeCollectionType = useCallback(

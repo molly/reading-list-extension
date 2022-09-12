@@ -39,10 +39,11 @@ it("makes validator based on schema", () => {
   expect(optionalDateValidator("2022-02-02")).toEqual(true);
   expect(optionalDateValidator("not a date")).toEqual(false);
 
-  // Value can be anything, just needs to exist
+  // Value can be anything (except empty strings), just needs to exist
   const requiredFieldValidator = makeFieldValidator({ required: true });
   expect(requiredFieldValidator(null)).toEqual(false);
   expect(requiredFieldValidator(undefined)).toEqual(false);
+  expect(requiredFieldValidator("")).toEqual(false);
   expect(requiredFieldValidator(false)).toEqual(true); // Falsy is fine, just checking that something's there
   expect(requiredFieldValidator("hello")).toEqual(true);
   expect(requiredFieldValidator(5)).toEqual(true);

@@ -33,7 +33,6 @@ export default function Form({
       );
     } else if (
       fieldSchema.type.endsWith("SelectField") &&
-      !fieldSchema.options &&
       fieldSchema.fieldName === "tags"
     ) {
       fieldSchema.options = tags;
