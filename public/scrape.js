@@ -20,8 +20,12 @@
     return newStr;
   };
 
-  const hasLowercaseCharacters = (str) =>
-    str.split("").some((char) => char === char.toLocaleLowerCase());
+  const hasLowercaseCharacters = (str) => {
+    if (str && typeof str === "string") {
+      return str.split("").some((char) => char === char.toLocaleLowerCase());
+    }
+    return false;
+  };
 
   const humanizeList = (list) => {
     if (!Array.isArray(list) || list.length === 0) {
@@ -153,15 +157,18 @@
     }
 
     if (!("title" in results)) {
+      let title;
       const titleTag = document.querySelector(
         'meta[property="og:title"], meta[property="twitter:title"], meta[name="twitter:title"]'
       );
       if (titleTag) {
-        const title = titleTag.getAttribute("content");
-        results.title = normalizeString(title, {
-          titlecase: !hasLowercaseCharacters(title),
-        });
+        title = titleTag.getAttribute("content");
+      } else {
+        title = document.title;
       }
+      results.title = normalizeString(title, {
+        titlecase: !hasLowercaseCharacters(title),
+      });
     }
 
     if (!("author" in results)) {
