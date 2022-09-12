@@ -2,7 +2,10 @@ import { applyAuthTokenInterceptor } from "axios-jwt";
 import { setupCache, buildMemoryStorage } from "axios-cache-interceptor";
 import axios from "axios";
 
-const API_URL = "http://localhost:5001";
+const API_URL =
+  process.env === "local"
+    ? "http://localhost:5001"
+    : "http://mollywhite.net/dynamic-api";
 
 const authInterceptorConfig = {
   requestRefresh: async (refreshToken) => {
