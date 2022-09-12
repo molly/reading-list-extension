@@ -1,16 +1,22 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { Button, TextField, Typography } from "@mui/material";
+import { Alert, Button, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { signin } from "../api/auth";
 
-export default function Login({ setUser }) {
+export default function Login({ setIsLoggedIn }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await signin(username, password);
+    const resp = await signin(username, password);
+    if (resp.error) {
+      setError(resp.error);
+    } else {
+      setIsLoggedIn(true);
+    }
   };
 
   return (
@@ -47,11 +53,16 @@ export default function Login({ setUser }) {
         >
           Log in
         </Button>
+        {error && (
+          <Alert sx={{ mt: 1 }} severity="error">
+            {error}
+          </Alert>
+        )}
       </Box>
     </Box>
   );
 }
 
 Login.propTypes = {
-  setUser: PropTypes.func.isRequired,
+  setIsLoggedIn: PropTypes.func.isRequired,
 };

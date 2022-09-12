@@ -2,7 +2,7 @@ import { applyAuthTokenInterceptor } from "axios-jwt";
 import { setupCache, buildMemoryStorage } from "axios-cache-interceptor";
 import axios from "axios";
 
-const API_URL = "http://localhost:3000";
+const API_URL = "http://localhost:5001";
 
 const authInterceptorConfig = {
   requestRefresh: async (refreshToken) => {

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Alert,
   Box,
+  Button,
   CircularProgress,
   FormControl,
   Select,
@@ -22,6 +23,7 @@ import { filterPrefillData, getPrefillData, getTags } from "../js/prefill";
 import { validate } from "../schemas/validate";
 
 import { addEntry } from "../api/entry";
+import { signout } from "../api/auth";
 
 const OnDarkSelect = styled(Select)({
   "& .MuiSelect-select": {
@@ -32,7 +34,12 @@ const OnDarkSelect = styled(Select)({
   },
 });
 
-export default function NewEntry() {
+const OnDarkButton = styled(Button)({
+  color: "#FFFFFF",
+  borderColor: "#FFFFFF",
+});
+
+export default function NewEntry({ setIsLoggedIn }) {
   const [prefillData, setPrefillData] = useState(null);
   const [allTags, setAllTags] = useState(null);
 
@@ -106,10 +113,21 @@ export default function NewEntry() {
     setSaveStatus("loading");
     const { error } = await addEntry(collection, formData);
     if (error) {
-      setSaveStatus("error");
-      setSaveError(error.message);
+      if (error.status === 401) {
+        setIsLoggedIn(false);
+      } else {
+        setSaveStatus("error");
+        setSaveError(error.message);
+      }
     } else {
       setSaveStatus("success");
+    }
+  };
+
+  const handleSignout = async () => {
+    const resp = await signout();
+    if (!resp.error) {
+      setIsLoggedIn(false);
     }
   };
 
@@ -164,7 +182,7 @@ export default function NewEntry() {
               : "success"
           }
         >
-          <Toolbar>
+          <Toolbar sx={{ justifyContent: "space-between" }}>
             <OnDarkSelect
               labelId="reading-list-type-label"
               id="reading-list-type"
@@ -179,6 +197,9 @@ export default function NewEntry() {
               <MenuItem value="blockchain">Blockchain</MenuItem>
               <MenuItem value="press">Press</MenuItem>
             </OnDarkSelect>
+            <OnDarkButton variant="outlined" onClick={handleSignout}>
+              Sign out
+            </OnDarkButton>
           </Toolbar>
         </AppBar>
         <Form
