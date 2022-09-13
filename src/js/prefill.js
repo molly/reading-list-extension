@@ -2,7 +2,10 @@ import client from "../api/client";
 import { FIELDS } from "../schemas";
 
 export const getPrefillData = async () => {
-  const [tabDetails] = await chrome.tabs.query({ active: true });
+  const [tabDetails] = await chrome.tabs.query({
+    active: true,
+    lastFocusedWindow: true,
+  });
   let prefillData = { href: tabDetails.url };
   if (!tabDetails || !tabDetails.id) {
     return prefillData;
@@ -33,7 +36,7 @@ export const filterPrefillData = (prefillData, collection) => {
 };
 
 export const getTags = async () => {
-  let tags = {};
+  let tags = { blockchain: [], press: [], shortform: [] };
   try {
     if (!tags.length) {
       const response = await client.get("/tags");

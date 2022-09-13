@@ -172,13 +172,19 @@
     }
 
     if (!("author" in results)) {
-      const authorTag = document.querySelector('meta[name="author"]');
+      let author;
+      let authorTag = document.querySelector('meta[name="author"]');
       if (authorTag) {
-        const author = authorTag.getAttribute("content");
-        results.author = normalizeString(author, {
-          titlecase: !hasLowercaseCharacters(author),
-        });
+        author = authorTag.getAttribute("content");
+      } else {
+        authorTag = document.querySelector('a[rel="author"], #author, .author');
+        if (authorTag) {
+          author = authorTag.innerHTML;
+        }
       }
+      results.author = normalizeString(author, {
+        titlecase: !hasLowercaseCharacters(author),
+      });
     }
 
     if (!("work" in results)) {
@@ -194,11 +200,16 @@
     }
 
     if (!("date" in results)) {
-      const dateTag = document.querySelector(
+      let dateTag = document.querySelector(
         'meta[name="article.updated"], meta[itemProp="dateModified"], meta[name="article.published"], meta[itemProp="datePublished"], meta[itemProp="dateLastPubbed"]'
       );
       if (dateTag) {
         results.date = getDateFromIsoString(dateTag.getAttribute("content"));
+      } else {
+        dateTag = document.querySelector("time");
+        if (dateTag) {
+          results.date = getDateFromIsoString(dateTag.getAttribute("datetime"));
+        }
       }
     }
 
