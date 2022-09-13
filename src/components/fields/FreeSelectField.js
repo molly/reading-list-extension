@@ -6,7 +6,7 @@ import { useValidateField } from "../../hooks/useValidateField";
 const makeOptionFromValue = (option) => {
   if (typeof option === "string") {
     return {
-      value: option.toLocaleLowerCase().replace("/ /g", "-"),
+      value: option.toLocaleLowerCase().replace("/ /g", "_"),
       text: option,
     };
   }
