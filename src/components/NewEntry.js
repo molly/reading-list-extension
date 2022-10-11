@@ -111,7 +111,16 @@ export default function NewEntry({ setIsLoggedIn }) {
 
   const save = async () => {
     setSaveStatus("loading");
-    const { error } = await addEntry(collection, formData);
+
+    // Remove empty values
+    const filteredData = Object.keys(formData).reduce((acc, key) => {
+      if (formData[key] || formData[key] === false) {
+        acc[key] = formData[key];
+      }
+      return acc;
+    }, {});
+
+    const { error } = await addEntry(collection, filteredData);
     if (error) {
       if (error.status === 401) {
         setIsLoggedIn(false);
