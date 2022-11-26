@@ -6,10 +6,10 @@ export const getPrefillData = async () => {
     active: true,
     lastFocusedWindow: true,
   });
-  let prefillData = { href: tabDetails.url };
   if (!tabDetails || !tabDetails.id) {
-    return prefillData;
+    return {};
   }
+  let prefillData = { href: tabDetails.url };
   try {
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId: tabDetails.id },
@@ -20,7 +20,7 @@ export const getPrefillData = async () => {
       prefillData = { ...prefillData, ...result };
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return prefillData;
   }
   return prefillData;

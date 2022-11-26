@@ -17,7 +17,7 @@ export default function BooleanField({
         control={<Checkbox checked={value} />}
         label={fieldSchema.label}
         aria-label={fieldSchema.label}
-        onChange={({ target: { value } }) => setField(value)}
+        onChange={({ target }) => setField(target.checked)}
         sx={{ mr: 0 }}
         error={!isValid}
       />
