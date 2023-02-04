@@ -179,7 +179,7 @@
       } else {
         authorTag = document.querySelector('a[rel="author"], #author, .author');
         if (authorTag) {
-          author = authorTag.innerHTML;
+          author = authorTag.innerText;
         }
       }
       results.author = normalizeString(author, {
