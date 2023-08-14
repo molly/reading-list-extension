@@ -50,8 +50,12 @@
 
   const getAuthor = (node) => {
     if (node.name) {
-      return normalizeString(node.name, {
-        titlecase: !hasLowercaseCharacters(node.name),
+      let name = node.name;
+      if (Array.isArray(name)) {
+        name = node.name[0];
+      }
+      return normalizeString(name, {
+        titlecase: !hasLowercaseCharacters(name),
       });
     }
     return null;
