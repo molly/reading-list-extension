@@ -23,7 +23,7 @@ const cacheInterceptorConfig = {
 };
 
 export const axiosInstance = setupCache(
-  axios.create({ baseURL: API_URL }, cacheInterceptorConfig)
+  axios.create({ baseURL: API_URL }, cacheInterceptorConfig),
 );
 
 applyAuthTokenInterceptor(axiosInstance, authInterceptorConfig);

@@ -118,7 +118,7 @@
       document,
       null,
       XPathResult.FIRST_ORDERED_NODE_TYPE,
-      null
+      null,
     ).singleNodeValue;
 
     let schema = JSON.parse(schemaNode.innerHTML);
@@ -163,7 +163,7 @@
     if (!("title" in results)) {
       let title;
       const titleTag = document.querySelector(
-        'meta[property="og:title"], meta[property="twitter:title"], meta[name="twitter:title"]'
+        'meta[property="og:title"], meta[property="twitter:title"], meta[name="twitter:title"]',
       );
       if (titleTag) {
         title = titleTag.getAttribute("content");
@@ -193,7 +193,7 @@
 
     if (!("work" in results)) {
       const publisherTag = document.querySelector(
-        'meta[property="og:site_name"]'
+        'meta[property="og:site_name"]',
       );
       if (publisherTag) {
         const publisher = publisherTag.getAttribute("content");
@@ -205,7 +205,7 @@
 
     if (!("date" in results)) {
       let dateTag = document.querySelector(
-        'meta[name="article.updated"], meta[itemProp="dateModified"], meta[name="article.published"], meta[itemProp="datePublished"], meta[itemProp="dateLastPubbed"]'
+        'meta[name="article.updated"], meta[itemProp="dateModified"], meta[name="article.published"], meta[itemProp="datePublished"], meta[itemProp="dateLastPubbed"]',
       );
       if (dateTag) {
         results.date = getDateFromIsoString(dateTag.getAttribute("content"));
@@ -219,7 +219,7 @@
 
     if (!("summary" in results)) {
       const summaryTag = document.querySelector(
-        'meta[name="article.summary"], meta[property="og:description"], meta[name="twitter:description"]'
+        'meta[name="article.summary"], meta[property="og:description"], meta[name="twitter:description"]',
       );
       if (summaryTag) {
         results.summary = normalizeString(summaryTag.getAttribute("content"));
@@ -232,7 +232,7 @@
     ) {
       const languageNames = new Intl.DisplayNames(["en"], { type: "language" });
       results.parenthetical = `in ${languageNames.of(
-        document.documentElement.lang.toUpperCase()
+        document.documentElement.lang.toUpperCase(),
       )}`;
     }
 

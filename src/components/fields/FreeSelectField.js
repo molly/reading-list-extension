@@ -23,7 +23,7 @@ export default function FreeSelectField({
   const isValid = useValidateField(fieldSchema, value);
 
   const [fullValue, setFullValue] = useState(
-    value || (fieldSchema.multi ? [] : "")
+    value || (fieldSchema.multi ? [] : ""),
   );
 
   const handleChange = (_, newValue) => {

@@ -77,11 +77,11 @@ export default function NewEntry({ setIsLoggedIn }) {
       const initialFormData = copy(EMPTY_FORM_DATA[collectionType]);
       const filteredPrefillData = filterPrefillData(
         { ...prefillData, ...formData },
-        collectionType
+        collectionType,
       );
       setFormData({ ...initialFormData, ...filteredPrefillData });
     },
-    [prefillData, formData]
+    [prefillData, formData],
   );
 
   const changeCollectionType = useCallback(
@@ -89,7 +89,7 @@ export default function NewEntry({ setIsLoggedIn }) {
       setCollection(collectionType);
       updateEmptyDataOnCollectionChange(collectionType);
     },
-    [updateEmptyDataOnCollectionChange]
+    [updateEmptyDataOnCollectionChange],
   );
 
   const createFieldSetter = useCallback(
@@ -99,14 +99,14 @@ export default function NewEntry({ setIsLoggedIn }) {
         [field]: value,
       }));
     },
-    []
+    [],
   );
 
   const isLoading = useMemo(() => !formData || !allTags, [formData, allTags]);
 
   const isValid = useMemo(
     () => validate(formData, SCHEMAS[collection]),
-    [formData, collection]
+    [formData, collection],
   );
 
   const save = async () => {
@@ -187,8 +187,8 @@ export default function NewEntry({ setIsLoggedIn }) {
             collection === "shortform"
               ? "primary"
               : collection === "blockchain"
-              ? "secondary"
-              : "success"
+                ? "secondary"
+                : "success"
           }
         >
           <Toolbar sx={{ justifyContent: "space-between" }}>

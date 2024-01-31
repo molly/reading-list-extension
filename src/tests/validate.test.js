@@ -82,13 +82,13 @@ it("validates formData against provided basic schema", () => {
   ];
 
   expect(
-    validate({ title: "Some title", date: "2022-05-01" }, basicSchema)
+    validate({ title: "Some title", date: "2022-05-01" }, basicSchema),
   ).toEqual(true);
   expect(
     validate(
       { title: "Some title", author: "Hemingway", date: "2022-05-01" },
-      basicSchema
-    )
+      basicSchema,
+    ),
   ).toEqual(true);
 
   // Missing required field
@@ -97,7 +97,7 @@ it("validates formData against provided basic schema", () => {
 
   // Field that doesn't validate
   expect(
-    validate({ title: "Some title", date: "not a date" }, basicSchema)
+    validate({ title: "Some title", date: "not a date" }, basicSchema),
   ).toEqual(false);
 });
 
@@ -135,13 +135,13 @@ it("validates formData against provided nested schema", () => {
   ];
 
   expect(
-    validate({ title: "Some title", started: "2022-05-01" }, nestedSchema)
+    validate({ title: "Some title", started: "2022-05-01" }, nestedSchema),
   ).toEqual(true);
   expect(
     validate(
       { title: "Some title", started: "2022-05-01", completed: "2022-05-02" },
-      nestedSchema
-    )
+      nestedSchema,
+    ),
   ).toEqual(true);
 
   // Missing required field
@@ -150,6 +150,6 @@ it("validates formData against provided nested schema", () => {
 
   // Field that doesn't validate
   expect(
-    validate({ title: "Some title", started: "not a date" }, nestedSchema)
+    validate({ title: "Some title", started: "not a date" }, nestedSchema),
   ).toEqual(false);
 });

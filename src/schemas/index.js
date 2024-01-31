@@ -51,7 +51,7 @@ export const EMPTY_FORM_DATA = ["shortform", "blockchain", "press"].reduce(
     acc[collection] = createEmptyFormData(SCHEMAS[collection]);
     return acc;
   },
-  {}
+  {},
 );
 
 export const getFields = (schema) => {
@@ -71,5 +71,5 @@ export const FIELDS = ["shortform", "blockchain", "press"].reduce(
     acc[collection] = getFields(SCHEMAS[collection]);
     return acc;
   },
-  {}
+  {},
 );
