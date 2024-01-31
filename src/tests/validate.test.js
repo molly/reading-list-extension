@@ -2,7 +2,7 @@ import {
   isValidDate,
   isValidIsoDateTime,
   makeFieldValidator,
-  validate,
+  validate
 } from "../schemas/validate";
 
 it("validates a date with makeDateValidator", () => {
@@ -24,7 +24,7 @@ it("makes validator based on schema", () => {
   // Value required, needs to validate as a date
   const requiredDateValidator = makeFieldValidator({
     required: true,
-    validate: isValidDate,
+    validate: isValidDate
   });
   expect(requiredDateValidator(null)).toEqual(false);
   expect(requiredDateValidator("2022-02-02")).toEqual(true);
@@ -33,7 +33,7 @@ it("makes validator based on schema", () => {
   // Value optional, if specified it needs to validate as a date
   const optionalDateValidator = makeFieldValidator({
     required: false,
-    validate: isValidDate,
+    validate: isValidDate
   });
   expect(optionalDateValidator(null)).toEqual(true);
   expect(optionalDateValidator("2022-02-02")).toEqual(true);
@@ -63,13 +63,13 @@ it("validates formData against provided basic schema", () => {
       label: "Title",
       type: "TextField",
       rows: 2,
-      required: true,
+      required: true
     },
     {
       fieldName: "author",
       label: "Author",
       type: "TextField",
-      required: false,
+      required: false
     },
     {
       fieldName: "date",
@@ -77,18 +77,18 @@ it("validates formData against provided basic schema", () => {
       type: "DateField",
       required: true,
       default: "",
-      validate: isValidDate,
-    },
+      validate: isValidDate
+    }
   ];
 
   expect(
-    validate({ title: "Some title", date: "2022-05-01" }, basicSchema),
+    validate({ title: "Some title", date: "2022-05-01" }, basicSchema)
   ).toEqual(true);
   expect(
     validate(
       { title: "Some title", author: "Hemingway", date: "2022-05-01" },
-      basicSchema,
-    ),
+      basicSchema
+    )
   ).toEqual(true);
 
   // Missing required field
@@ -97,7 +97,7 @@ it("validates formData against provided basic schema", () => {
 
   // Field that doesn't validate
   expect(
-    validate({ title: "Some title", date: "not a date" }, basicSchema),
+    validate({ title: "Some title", date: "not a date" }, basicSchema)
   ).toEqual(false);
 });
 
@@ -108,7 +108,7 @@ it("validates formData against provided nested schema", () => {
       label: "Title",
       type: "TextField",
       rows: 2,
-      required: true,
+      required: true
     },
     {
       fieldName: "datesGroup",
@@ -120,7 +120,7 @@ it("validates formData against provided nested schema", () => {
           type: "DateField",
           required: true,
           sx: { flexGrow: 1, mr: "10px" },
-          validate: isValidDate,
+          validate: isValidDate
         },
         {
           label: "Completed",
@@ -128,20 +128,20 @@ it("validates formData against provided nested schema", () => {
           type: "DateField",
           importance: "secondary",
           sx: { flexGrow: 1 },
-          validate: isValidDate,
-        },
-      ],
-    },
+          validate: isValidDate
+        }
+      ]
+    }
   ];
 
   expect(
-    validate({ title: "Some title", started: "2022-05-01" }, nestedSchema),
+    validate({ title: "Some title", started: "2022-05-01" }, nestedSchema)
   ).toEqual(true);
   expect(
     validate(
       { title: "Some title", started: "2022-05-01", completed: "2022-05-02" },
-      nestedSchema,
-    ),
+      nestedSchema
+    )
   ).toEqual(true);
 
   // Missing required field
@@ -150,6 +150,6 @@ it("validates formData against provided nested schema", () => {
 
   // Field that doesn't validate
   expect(
-    validate({ title: "Some title", started: "not a date" }, nestedSchema),
+    validate({ title: "Some title", started: "not a date" }, nestedSchema)
   ).toEqual(false);
 });

@@ -7,7 +7,7 @@ const makeOptionFromValue = (option) => {
   if (typeof option === "string") {
     return {
       value: option.toLocaleLowerCase().replace("/ /g", "_"),
-      text: option,
+      text: option
     };
   }
   return option;
@@ -23,7 +23,7 @@ export default function FreeSelectField({
   const isValid = useValidateField(fieldSchema, value);
 
   const [fullValue, setFullValue] = useState(
-    value || (fieldSchema.multi ? [] : ""),
+    value || (fieldSchema.multi ? [] : "")
   );
 
   const handleChange = (_, newValue) => {
@@ -60,5 +60,5 @@ FreeSelectField.propTypes = {
   fieldSchema: PropTypes.object.isRequired,
   value: PropTypes.string,
   setField: PropTypes.func.isRequired,
-  sx: PropTypes.object,
+  sx: PropTypes.object
 };

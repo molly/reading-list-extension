@@ -30,5 +30,5 @@ DateTimeField.propTypes = {
   fieldSchema: PropTypes.object.isRequired,
   value: PropTypes.string,
   setField: PropTypes.func.isRequired,
-  sx: PropTypes.object,
+  sx: PropTypes.object
 };

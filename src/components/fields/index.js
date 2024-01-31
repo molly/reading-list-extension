@@ -11,7 +11,7 @@ const Fields = {
   DateTimeField,
   FreeSelectField,
   SelectField,
-  TextField,
+  TextField
 };
 
 export default Fields;

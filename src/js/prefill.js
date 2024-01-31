@@ -4,7 +4,7 @@ import { FIELDS } from "../schemas";
 export const getPrefillData = async () => {
   const [tabDetails] = await chrome.tabs.query({
     active: true,
-    lastFocusedWindow: true,
+    lastFocusedWindow: true
   });
   if (!tabDetails || !tabDetails.id) {
     return {};
@@ -13,7 +13,7 @@ export const getPrefillData = async () => {
   try {
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId: tabDetails.id },
-      files: ["build/scrape.js"],
+      files: ["build/scrape.js"]
     });
 
     if (result) {

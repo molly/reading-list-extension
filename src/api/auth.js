@@ -6,7 +6,7 @@ export const signin = async (username, password) => {
     const response = await client.post(`/auth/signin`, { username, password });
     setAuthTokens({
       accessToken: response.data.accessToken,
-      refreshToken: response.data.refreshToken,
+      refreshToken: response.data.refreshToken
     });
     return { user: response.data.username, error: false };
   } catch (err) {

@@ -12,10 +12,10 @@ const blockchain = [
       { text: "Read", value: "read" },
       { text: "Reference", value: "reference" },
       { text: "Shelved", value: "shelved" },
-      { text: "To read", value: "toRead" },
+      { text: "To read", value: "toRead" }
     ],
-    required: false,
-  },
+    required: false
+  }
 ];
 
 export default blockchain;

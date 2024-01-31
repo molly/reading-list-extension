@@ -6,12 +6,12 @@ const shortform = [
     label: "Title",
     type: "TextField",
     rows: 2,
-    required: true,
+    required: true
   },
   {
     fieldName: "author",
     label: "Author",
-    type: "TextField",
+    type: "TextField"
   },
   {
     fieldName: "date",
@@ -19,7 +19,7 @@ const shortform = [
     type: "DateField",
     required: true,
     default: "",
-    validate: isValidDate,
+    validate: isValidDate
   },
   {
     fieldName: "workGroup",
@@ -31,22 +31,22 @@ const shortform = [
         type: "TextField",
         default: "in",
         sx: { maxWidth: "100px", mr: "16px" },
-        importance: "secondary",
+        importance: "secondary"
       },
       {
         label: "Work",
         fieldName: "work",
         type: "TextField",
-        sx: { flexGrow: 1, mr: "16px" },
+        sx: { flexGrow: 1, mr: "16px" }
       },
       {
         label: "Italicize?",
         fieldName: "workItalics",
         type: "BooleanField",
         default: true,
-        sx: { mr: 0 },
-      },
-    ],
+        sx: { mr: 0 }
+      }
+    ]
   },
   {
     fieldName: "publisherGroup",
@@ -57,36 +57,36 @@ const shortform = [
         fieldName: "publisher",
         type: "TextField",
         sx: { flexGrow: 1, mr: "16px" },
-        importance: "secondary",
+        importance: "secondary"
       },
       {
         label: "Parenthetical",
         fieldName: "parenthetical",
         type: "TextField",
-        importance: "secondary",
-      },
-    ],
+        importance: "secondary"
+      }
+    ]
   },
   {
     label: "URL",
     fieldName: "href",
     type: "TextField",
     rows: 2,
-    required: true,
+    required: true
   },
   {
     label: "Tags",
     fieldName: "tags",
     type: "FreeSelectField",
     options: null, // Filled dynamically
-    multi: true,
+    multi: true
   },
   {
     label: "Summary",
     fieldName: "summary",
     type: "TextField",
     importance: "secondary",
-    rows: 3,
+    rows: 3
   },
   // TODO
   // relatedReading: {
@@ -102,7 +102,7 @@ const shortform = [
         type: "DateField",
         required: true,
         sx: { flexGrow: 1, mr: "10px" },
-        validate: isValidDate,
+        validate: isValidDate
       },
       {
         label: "Completed",
@@ -110,17 +110,17 @@ const shortform = [
         type: "DateField",
         importance: "secondary",
         sx: { flexGrow: 1 },
-        validate: isValidDate,
-      },
-    ],
+        validate: isValidDate
+      }
+    ]
   },
   {
     label: "Entry added",
     fieldName: "entryAdded",
     type: "DateTimeField",
     required: true,
-    validate: isValidIsoDateTime,
-  },
+    validate: isValidIsoDateTime
+  }
 ];
 
 export default shortform;

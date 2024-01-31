@@ -64,5 +64,5 @@ export default function Login({ setIsLoggedIn }) {
 }
 
 Login.propTypes = {
-  setIsLoggedIn: PropTypes.func.isRequired,
+  setIsLoggedIn: PropTypes.func.isRequired
 };

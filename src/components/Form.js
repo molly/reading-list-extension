@@ -8,13 +8,13 @@ export default function Form({
   tags,
   formData,
   createFieldSetter,
-  isGrouped,
+  isGrouped
 }) {
   const renderField = (fieldSchema, index) => {
     let FieldComponent;
     let props = {
       key: fieldSchema.fieldName,
-      sx: fieldSchema.sx || {},
+      sx: fieldSchema.sx || {}
     };
     if (index === 0) {
       props.sx.mt = "60px";
@@ -69,5 +69,5 @@ Form.propTypes = {
   formData: PropTypes.object.isRequired,
   createFieldSetter: PropTypes.func.isRequired,
   tags: PropTypes.object.isRequired,
-  isGrouped: PropTypes.bool,
+  isGrouped: PropTypes.bool
 };

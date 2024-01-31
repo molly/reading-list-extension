@@ -6,9 +6,9 @@ import { useValidateField } from "../../hooks/useValidateField";
 const SecondaryTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "#EEEEEE",
-    },
-  },
+      borderColor: "#EEEEEE"
+    }
+  }
 });
 
 export default function DateField({
@@ -42,5 +42,5 @@ DateField.propTypes = {
   fieldSchema: PropTypes.object.isRequired,
   value: PropTypes.string,
   setField: PropTypes.func.isRequired,
-  sx: PropTypes.object,
+  sx: PropTypes.object
 };

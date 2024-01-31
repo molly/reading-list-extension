@@ -25,7 +25,7 @@ export default function SelectField({
         required={fieldSchema.required}
         MenuProps={{
           sx: { maxHeight: "400px" },
-          MenuListProps: { dense: true },
+          MenuListProps: { dense: true }
         }}
         autoWidth={true}
         error={!isValid}
@@ -45,5 +45,5 @@ SelectField.propTypes = {
   fieldSchema: PropTypes.object.isRequired,
   value: PropTypes.string,
   setField: PropTypes.func.isRequired,
-  sx: PropTypes.object,
+  sx: PropTypes.object
 };

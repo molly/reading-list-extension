@@ -12,7 +12,7 @@ it("gets the correct default value for a field", () => {
 it("creates the expected empty form data from a schema", () => {
   expect(createEmptyFormData(BASIC_SCHEMA)).toEqual({
     title: "",
-    started: DateTime.now().toISODate(),
+    started: DateTime.now().toISODate()
   });
 });
 
@@ -21,6 +21,6 @@ it("gets all fields for a schema", () => {
     "title",
     "author",
     "started",
-    "completed",
+    "completed"
   ]);
 });

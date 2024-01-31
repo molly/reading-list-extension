@@ -7,9 +7,9 @@ import { useValidateField } from "../../hooks/useValidateField";
 const SecondaryTextField = styled(MuiTextField)({
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "#EEEEEE",
-    },
-  },
+      borderColor: "#EEEEEE"
+    }
+  }
 });
 
 export default function TextField({
@@ -26,7 +26,7 @@ export default function TextField({
       return {
         minRows: fieldSchema.rows,
         maxRows: fieldSchema.rows * 2,
-        multiline: true,
+        multiline: true
       };
     }
   }, [fieldSchema]);
@@ -56,5 +56,5 @@ TextField.propTypes = {
   fieldSchema: PropTypes.object.isRequired,
   value: PropTypes.string,
   setField: PropTypes.func.isRequired,
-  sx: PropTypes.object,
+  sx: PropTypes.object
 };

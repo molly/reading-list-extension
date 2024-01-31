@@ -10,7 +10,7 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Stack,
+  Stack
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { LoadingButton } from "@mui/lab";
@@ -27,16 +27,16 @@ import { signout } from "../api/auth";
 
 const OnDarkSelect = styled(Select)({
   "& .MuiSelect-select": {
-    color: "#FFFFFF",
+    color: "#FFFFFF"
   },
   "& .MuiSvgIcon-root": {
-    color: "#FFFFFF",
-  },
+    color: "#FFFFFF"
+  }
 });
 
 const OnDarkButton = styled(Button)({
   color: "#FFFFFF",
-  borderColor: "#FFFFFF",
+  borderColor: "#FFFFFF"
 });
 
 export default function NewEntry({ setIsLoggedIn }) {
@@ -77,11 +77,11 @@ export default function NewEntry({ setIsLoggedIn }) {
       const initialFormData = copy(EMPTY_FORM_DATA[collectionType]);
       const filteredPrefillData = filterPrefillData(
         { ...prefillData, ...formData },
-        collectionType,
+        collectionType
       );
       setFormData({ ...initialFormData, ...filteredPrefillData });
     },
-    [prefillData, formData],
+    [prefillData, formData]
   );
 
   const changeCollectionType = useCallback(
@@ -89,24 +89,24 @@ export default function NewEntry({ setIsLoggedIn }) {
       setCollection(collectionType);
       updateEmptyDataOnCollectionChange(collectionType);
     },
-    [updateEmptyDataOnCollectionChange],
+    [updateEmptyDataOnCollectionChange]
   );
 
   const createFieldSetter = useCallback(
     (field) => (value) => {
       setFormData((previousFormData) => ({
         ...previousFormData,
-        [field]: value,
+        [field]: value
       }));
     },
-    [],
+    []
   );
 
   const isLoading = useMemo(() => !formData || !allTags, [formData, allTags]);
 
   const isValid = useMemo(
     () => validate(formData, SCHEMAS[collection]),
-    [formData, collection],
+    [formData, collection]
   );
 
   const save = async () => {
@@ -148,7 +148,7 @@ export default function NewEntry({ setIsLoggedIn }) {
           alignItems: "center",
           justifyContent: "center",
           height: "600px",
-          width: "100%",
+          width: "100%"
         }}
       >
         <CircularProgress />
@@ -163,7 +163,7 @@ export default function NewEntry({ setIsLoggedIn }) {
           justifyContent: "center",
           height: "600px",
           width: "100%",
-          backgroundColor: "primary.dark",
+          backgroundColor: "primary.dark"
         }}
       >
         <Stack alignItems="center" spacing={1}>

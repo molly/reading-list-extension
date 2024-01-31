@@ -4,12 +4,12 @@ export const FIELDS = {
     label: "Title",
     type: "TextField",
     rows: 3,
-    required: true,
+    required: true
   },
   author: {
     fieldName: "author",
     label: "Author",
-    type: "TextField",
+    type: "TextField"
   },
   datesGroup: {
     fieldName: "datesGroup",
@@ -20,24 +20,24 @@ export const FIELDS = {
         fieldName: "started",
         type: "DateField",
         required: true,
-        sx: { flexGrow: 1, mr: "10px" },
+        sx: { flexGrow: 1, mr: "10px" }
       },
       {
         label: "Completed",
         fieldName: "completed",
         type: "DateField",
-        sx: { flexGrow: 1 },
-      },
-    ],
+        sx: { flexGrow: 1 }
+      }
+    ]
   },
   workItalics: {
     label: "Italicize?",
     fieldName: "workItalics",
     type: "BooleanField",
     default: true,
-    sx: { mr: 0 },
+    sx: { mr: 0 }
   },
-  date: { fieldName: "date", label: "Date", type: "DateField", required: true },
+  date: { fieldName: "date", label: "Date", type: "DateField", required: true }
 };
 
 export const BASIC_SCHEMA = [FIELDS.title, FIELDS.author, FIELDS.datesGroup];

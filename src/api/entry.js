@@ -8,8 +8,8 @@ export const addEntry = async (type, entry) => {
     return {
       error: {
         message: err.response?.data?.message,
-        status: err.response?.status,
-      },
+        status: err.response?.status
+      }
     };
   }
 };

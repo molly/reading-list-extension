@@ -29,5 +29,5 @@ BooleanField.propTypes = {
   fieldSchema: PropTypes.object.isRequired,
   value: PropTypes.bool,
   setField: PropTypes.func.isRequired,
-  sx: PropTypes.object,
+  sx: PropTypes.object
 };
