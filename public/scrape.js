@@ -1,7 +1,14 @@
 (function () {
   const normalizeString = (str, options = {}) => {
     let newStr = str;
+
     if (typeof str === "string") {
+      if (/&\S+;/.test(newStr)) {
+        // String contains HTML entities that need to be decoded
+        const span = document.createElement("span");
+        span.innerHTML = newStr;
+        newStr = span.textContent;
+      }
       newStr = newStr.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
 
       if (options.titlecase) {
