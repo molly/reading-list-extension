@@ -43,7 +43,7 @@ export default function NewEntry({ setIsLoggedIn }) {
   const [prefillData, setPrefillData] = useState(null);
   const [allTags, setAllTags] = useState(null);
 
-  const [collection, setCollection] = useState("blockchain");
+  const [collection, setCollection] = useState("shortform");
   const [formData, setFormData] = useState(null);
 
   const [saveStatus, setSaveStatus] = useState(null);
