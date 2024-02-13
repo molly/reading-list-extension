@@ -1,6 +1,10 @@
 import client from "../api/client";
 import { FIELDS } from "../schemas";
 
+function getSelection() {
+  return window.getSelection().toString();
+}
+
 export const getPrefillData = async () => {
   const [tabDetails] = await chrome.tabs.query({
     active: true,
@@ -8,6 +12,14 @@ export const getPrefillData = async () => {
   });
   if (!tabDetails || !tabDetails.id) {
     return {};
+  }
+  const selectionResult = await chrome.scripting.executeScript({
+    target: { tabId: tabDetails.id },
+    func: getSelection
+  });
+  let selection;
+  if (selectionResult && selectionResult.length && selectionResult[0].result) {
+    selection = selectionResult[0].result;
   }
   let prefillData = { href: tabDetails.url };
   try {
@@ -18,6 +30,9 @@ export const getPrefillData = async () => {
 
     if (result) {
       prefillData = { ...prefillData, ...result };
+    }
+    if (selection) {
+      prefillData = { ...prefillData, summary: selection };
     }
   } catch (err) {
     console.error(err);
