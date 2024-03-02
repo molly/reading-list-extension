@@ -51,7 +51,7 @@ export const filterPrefillData = (prefillData, collection) => {
 };
 
 export const getTags = async () => {
-  let tags = { blockchain: [], press: [], shortform: [] };
+  let tags = {};
   try {
     if (!tags.length) {
       const response = await client.get("/tags");

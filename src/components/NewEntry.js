@@ -1,29 +1,29 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import SaveIcon from "@mui/icons-material/Save";
+import { LoadingButton } from "@mui/lab";
 import {
   Alert,
+  AppBar,
   Box,
   Button,
   CircularProgress,
   FormControl,
-  Select,
   MenuItem,
-  AppBar,
+  Select,
+  Stack,
   Toolbar,
-  Typography,
-  Stack
+  Typography
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { LoadingButton } from "@mui/lab";
-import SaveIcon from "@mui/icons-material/Save";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import Form from "./Form";
-import { SCHEMAS, EMPTY_FORM_DATA } from "../schemas";
-import { copy } from "../js/utils";
 import { filterPrefillData, getPrefillData, getTags } from "../js/prefill";
+import { copy } from "../js/utils";
+import { EMPTY_FORM_DATA, SCHEMAS } from "../schemas";
 import { validate } from "../schemas/validate";
+import Form from "./Form";
 
-import { addEntry } from "../api/entry";
 import { signout } from "../api/auth";
+import { addEntry } from "../api/entry";
 
 const OnDarkSelect = styled(Select)({
   "& .MuiSelect-select": {
@@ -213,7 +213,7 @@ export default function NewEntry({ setIsLoggedIn }) {
         </AppBar>
         <Form
           schema={SCHEMAS[collection]}
-          tags={allTags[collection]}
+          tags={allTags}
           formData={formData}
           createFieldSetter={createFieldSetter}
         />

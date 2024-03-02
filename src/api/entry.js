@@ -2,7 +2,7 @@ import client from "./client";
 
 export const addEntry = async (type, entry) => {
   try {
-    await client.post("/entry", { type, entry });
+    await client.post("/entry", { type, entry }, { withCredentials: true });
     return { error: false };
   } catch (err) {
     return {

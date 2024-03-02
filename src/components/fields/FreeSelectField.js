@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
 import { Autocomplete, TextField } from "@mui/material";
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { useValidateField } from "../../hooks/useValidateField";
 
@@ -31,11 +31,11 @@ export default function FreeSelectField({
     if (fieldSchema.multi) {
       value = newValue.map((val) => makeOptionFromValue(val));
       setFullValue(value);
-      setField(value.map((option) => option.value));
+      setField(value.map((option) => option._id));
     } else {
       value = makeOptionFromValue(newValue);
       setFullValue(value);
-      setField(value.value);
+      setField(value._id);
     }
   };
 

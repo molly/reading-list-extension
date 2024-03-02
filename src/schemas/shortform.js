@@ -120,6 +120,13 @@ const shortform = [
     type: "DateTimeField",
     required: true,
     validate: isValidIsoDateTime
+  },
+  {
+    label: "Post to feed?",
+    fieldName: "postToFeed",
+    type: "BooleanField",
+    default: true,
+    sx: { mr: 0 }
   }
 ];
 

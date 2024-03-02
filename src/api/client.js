@@ -1,22 +1,10 @@
-import { applyAuthTokenInterceptor } from "axios-jwt";
 import axios from "axios";
 
 const API_URL =
-  process.env === "local"
-    ? "http://localhost:5001"
+  process.env.REACT_APP_API_ENV === "local"
+    ? "http://localhost:5001/dynamic-api"
     : "https://www.mollywhite.net/dynamic-api";
 
-const authInterceptorConfig = {
-  requestRefresh: async (refreshToken) => {
-    const response = await axios.post(`${API_URL}/auth/refresh`, {
-      refreshToken
-    });
-    return response.data.accessToken;
-  }
-};
-
-export const axiosInstance = axios.create({ baseURL: API_URL });
-
-applyAuthTokenInterceptor(axiosInstance, authInterceptorConfig);
+const axiosInstance = axios.create({ baseURL: API_URL });
 
 export default axiosInstance;
