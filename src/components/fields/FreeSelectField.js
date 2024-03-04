@@ -31,11 +31,11 @@ export default function FreeSelectField({
     if (fieldSchema.multi) {
       value = newValue.map((val) => makeOptionFromValue(val));
       setFullValue(value);
-      setField(value.map((option) => option._id));
+      setField(value.map((option) => option._id || option.value));
     } else {
       value = makeOptionFromValue(newValue);
       setFullValue(value);
-      setField(value._id);
+      setField(value._id || value.value);
     }
   };
 
