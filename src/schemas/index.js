@@ -1,11 +1,11 @@
 import { DateTime } from "luxon";
-import shortform from "./shortform";
-import blockchain from "./blockchain";
+import book from "./book";
 import press from "./press";
+import shortform from "./shortform";
 
 export const SCHEMAS = {
   shortform,
-  blockchain,
+  book,
   press
 };
 
@@ -46,7 +46,7 @@ export const createEmptyFormData = (schema) => {
   return data;
 };
 
-export const EMPTY_FORM_DATA = ["shortform", "blockchain", "press"].reduce(
+export const EMPTY_FORM_DATA = ["shortform", "book", "press"].reduce(
   (acc, collection) => {
     acc[collection] = createEmptyFormData(SCHEMAS[collection]);
     return acc;
@@ -66,7 +66,7 @@ export const getFields = (schema) => {
   return fields;
 };
 
-export const FIELDS = ["shortform", "blockchain", "press"].reduce(
+export const FIELDS = ["shortform", "book", "press"].reduce(
   (acc, collection) => {
     acc[collection] = getFields(SCHEMAS[collection]);
     return acc;

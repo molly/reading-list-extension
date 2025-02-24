@@ -43,6 +43,7 @@ export default function NewEntry({ setIsLoggedIn }) {
   const [prefillData, setPrefillData] = useState(null);
   const [allTags, setAllTags] = useState(null);
 
+  const [bookTags, setBookTags] = useState(null);
   const [collection, setCollection] = useState("shortform");
   const [formData, setFormData] = useState(null);
 
@@ -51,14 +52,22 @@ export default function NewEntry({ setIsLoggedIn }) {
 
   useEffect(() => {
     // Set once per load
-    const initialFormData = copy(EMPTY_FORM_DATA[collection]);
+    let initialFormData = copy(EMPTY_FORM_DATA[collection]);
+    setFormData(EMPTY_FORM_DATA);
     getPrefillData().then((data) => {
+      let _collection = "shortform";
+      if (data.collection === "book") {
+        _collection = "book";
+        setCollection("book");
+        initialFormData = copy(EMPTY_FORM_DATA["book"]);
+      }
       setPrefillData(data);
-      const filteredPrefillData = filterPrefillData(data, collection);
+      const filteredPrefillData = filterPrefillData(data, _collection);
       setFormData({ ...initialFormData, ...filteredPrefillData });
     });
     getTags().then((data) => {
-      setAllTags(data);
+      setAllTags(data.tags);
+      setBookTags(data.bookTags);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -186,7 +195,7 @@ export default function NewEntry({ setIsLoggedIn }) {
           color={
             collection === "shortform"
               ? "primary"
-              : collection === "blockchain"
+              : collection === "book"
                 ? "secondary"
                 : "success"
           }
@@ -203,7 +212,7 @@ export default function NewEntry({ setIsLoggedIn }) {
               disableUnderline={true}
             >
               <MenuItem value="shortform">Shortform</MenuItem>
-              <MenuItem value="blockchain">Blockchain</MenuItem>
+              <MenuItem value="book">Book</MenuItem>
               <MenuItem value="press">Press</MenuItem>
             </OnDarkSelect>
             <OnDarkButton variant="outlined" onClick={handleSignout}>
@@ -213,7 +222,9 @@ export default function NewEntry({ setIsLoggedIn }) {
         </AppBar>
         <Form
           schema={SCHEMAS[collection]}
+          collection={collection}
           tags={allTags}
+          bookTags={bookTags}
           formData={formData}
           createFieldSetter={createFieldSetter}
         />

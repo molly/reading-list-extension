@@ -20,13 +20,14 @@ export default function Popup() {
   } else if (isLoggedIn) {
     return <NewEntry setIsLoggedIn={setIsLoggedIn} />;
   }
+
   return (
     <Box
       sx={{
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        height: "600px",
+        height: "800px",
         width: "100%"
       }}
     >

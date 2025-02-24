@@ -52,6 +52,7 @@ export const filterPrefillData = (prefillData, collection) => {
 
 export const getTags = async () => {
   let tags = {};
+  let bookTags = {};
   try {
     if (!tags.length) {
       const response = await client.get("/tags");
@@ -60,5 +61,13 @@ export const getTags = async () => {
   } catch (err) {
     // Return anyway
   }
-  return tags;
+  try {
+    if (!bookTags.length) {
+      const bookResponse = await client.get("/bookTags");
+      bookTags = bookResponse.data;
+    }
+  } catch (err) {
+    // Return anyway
+  }
+  return { tags, bookTags };
 };

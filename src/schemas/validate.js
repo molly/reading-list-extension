@@ -4,6 +4,8 @@ export const isValidDate = (value) =>
 export const isValidIsoDateTime = (str) =>
   /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}(Z|[+-]\d{2}:\d{2})?/.test(str);
 
+export const isValidInt = (str) => /^\d+$/.test(str);
+
 export const makeFieldValidator = (fieldSchema) => (value) => {
   if (value !== null && value !== undefined && value !== "") {
     if ("validate" in fieldSchema) {

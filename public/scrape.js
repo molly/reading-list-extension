@@ -76,6 +76,23 @@
         results.title = normalizeString(schema.headline, {
           titlecase: !hasLowercaseCharacters(schema.headline)
         });
+      } else if (schema["@type"] === "Book" && schema.name) {
+        const title = schema.name;
+        const match = title.match(/^(.*?)(?: \((.*?), #(\d+)\))?$/);
+        if (match && match.length) {
+          results.title = normalizeString(match[1]);
+          const splitTitle = results.title.split(": ");
+          if (splitTitle.length > 1) {
+            results.title = splitTitle[0];
+            results.subtitle = splitTitle[1];
+          }
+          if (match[2]) {
+            results.series = normalizeString(match[2]);
+          }
+          if (match[3]) {
+            results.seriesNumber = parseInt(match[3]);
+          }
+        }
       }
 
       // Authors
@@ -113,6 +130,16 @@
         results.summary = normalizeString(schema.description);
       }
 
+      // Book-specific: Pages, image
+      if (schema["@type"] === "Book" && schema.name) {
+        if (schema.numberOfPages) {
+          results.pages = parseInt(schema.numberOfPages);
+        }
+        if (schema.image) {
+          results.imageSrc = schema.image;
+        }
+      }
+
       return results;
     } catch (err) {
       console.error(err);
@@ -139,6 +166,7 @@
     if (Array.isArray(schema)) {
       for (const type of [
         "article",
+        "book",
         "newsarticle",
         "report",
         "scholarlyarticle",
@@ -157,11 +185,14 @@
   };
 
   const scrapePage = () => {
-    let results = {};
+    let results = { collection: "shortform" };
     try {
       const schema = getSchema();
       if (schema) {
-        results = { ...getDataFromSchema(schema) };
+        if (schema["@type"] === "Book") {
+          results.collection = "book";
+        }
+        results = { ...results, ...getDataFromSchema(schema) };
       }
     } catch (err) {
       // Malformed JSON, fall back to other scraping methods

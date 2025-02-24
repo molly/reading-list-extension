@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@base-ui-components/react": "^1.0.0-alpha.6",
     "@mui/icons-material": "^5.15.7",
     "@mui/lab": "^5.0.0-alpha.163",
     "@mui/material": "^5.15.7",
@@ -16,7 +17,7 @@
     "react-scripts": "5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "REACT_APP_API_ENV=local react-scripts start",
     "build": "react-scripts build",
     "build:local": "REACT_APP_API_ENV=local react-scripts build",
     "test": "react-scripts test",

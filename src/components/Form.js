@@ -5,7 +5,9 @@ import Fields from "./fields";
 
 export default function Form({
   schema,
+  collection,
   tags,
+  bookTags,
   formData,
   createFieldSetter,
   isGrouped
@@ -24,7 +26,9 @@ export default function Form({
       return (
         <Form
           schema={fieldSchema.fields}
+          collection={collection}
           tags={tags}
+          bookTags={bookTags}
           formData={formData}
           createFieldSetter={createFieldSetter}
           isGrouped={true}
@@ -35,7 +39,11 @@ export default function Form({
       fieldSchema.type.endsWith("SelectField") &&
       fieldSchema.fieldName === "tags"
     ) {
-      fieldSchema.options = tags;
+      if (collection === "shortform") {
+        fieldSchema.options = tags;
+      } else if (collection === "book") {
+        fieldSchema.options = bookTags;
+      }
     }
 
     if (isGrouped) {
@@ -66,8 +74,10 @@ export default function Form({
 
 Form.propTypes = {
   schema: PropTypes.array.isRequired,
+  collection: PropTypes.string.isRequired,
   formData: PropTypes.object.isRequired,
   createFieldSetter: PropTypes.func.isRequired,
-  tags: PropTypes.object.isRequired,
+  tags: PropTypes.array,
+  bookTags: PropTypes.array,
   isGrouped: PropTypes.bool
 };
