@@ -1,5 +1,6 @@
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import PropTypes from "prop-types";
-import { FormGroup, FormControlLabel, Checkbox } from "@mui/material";
+import { useMemo } from "react";
 import { useValidateField } from "../../hooks/useValidateField";
 
 export default function BooleanField({
@@ -10,6 +11,13 @@ export default function BooleanField({
   ...rest
 }) {
   const isValid = useValidateField(fieldSchema, value);
+  const readOnlyProps = useMemo(() => {
+    if (!("readOnly" in fieldSchema) || !fieldSchema.readOnly) {
+      return {};
+    } else {
+      return { disabled: true };
+    }
+  }, [fieldSchema]);
 
   return (
     <FormGroup sx={{ mt: "10px", ...sx }} {...rest}>
@@ -20,6 +28,7 @@ export default function BooleanField({
         onChange={({ target }) => setField(target.checked)}
         sx={{ mr: 0 }}
         error={!isValid}
+        {...readOnlyProps}
       />
     </FormGroup>
   );

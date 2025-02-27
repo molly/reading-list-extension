@@ -1,6 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useValidateField } from "../../hooks/useValidateField";
 
 const makeOptionFromValue = (option) => {
@@ -21,6 +21,17 @@ export default function FreeSelectField({
   ...rest
 }) {
   const isValid = useValidateField(fieldSchema, value);
+
+  const readOnlyProps = useMemo(() => {
+    if (!("readOnly" in fieldSchema) || !fieldSchema.readOnly) {
+      return {};
+    } else {
+      return {
+        readOnly: true,
+        renderInput: (params) => <TextField {...params} disabled />
+      };
+    }
+  }, [fieldSchema]);
 
   const [fullValue, setFullValue] = useState(
     value || (fieldSchema.multi ? [] : "")
@@ -51,6 +62,7 @@ export default function FreeSelectField({
       sx={{ mt: "10px", ...sx }}
       size="small"
       error={!isValid}
+      {...readOnlyProps}
       {...rest}
     />
   );

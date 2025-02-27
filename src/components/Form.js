@@ -41,7 +41,7 @@ export default function Form({
     ) {
       if (collection === "shortform") {
         fieldSchema.options = tags;
-      } else if (collection === "book") {
+      } else if (collection === "book" || collection === "bookUpdate") {
         fieldSchema.options = bookTags;
       }
     }

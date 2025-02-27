@@ -1,5 +1,6 @@
-import PropTypes from "prop-types";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import PropTypes from "prop-types";
+import { useMemo } from "react";
 import { useValidateField } from "../../hooks/useValidateField";
 
 export default function SelectField({
@@ -10,6 +11,13 @@ export default function SelectField({
   ...rest
 }) {
   const isValid = useValidateField(fieldSchema, value);
+  const readOnlyProps = useMemo(() => {
+    if (!("readOnly" in fieldSchema) || !fieldSchema.readOnly) {
+      return {};
+    } else {
+      return { inputProps: { readOnly: true }, disabled: true };
+    }
+  }, [fieldSchema]);
 
   return (
     <FormControl sx={{ mt: "10px", ...sx }} size="small">
@@ -27,6 +35,7 @@ export default function SelectField({
           sx: { maxHeight: "400px" },
           MenuListProps: { dense: true }
         }}
+        {...readOnlyProps}
         autoWidth={true}
         error={!isValid}
         {...rest}

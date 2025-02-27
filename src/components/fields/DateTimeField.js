@@ -1,5 +1,6 @@
-import PropTypes from "prop-types";
 import { TextField } from "@mui/material";
+import PropTypes from "prop-types";
+import { useMemo } from "react";
 import { useValidateField } from "../../hooks/useValidateField";
 
 export default function DateTimeField({
@@ -10,7 +11,13 @@ export default function DateTimeField({
   ...rest
 }) {
   const isValid = useValidateField(fieldSchema, value);
-
+  const readOnlyProps = useMemo(() => {
+    if (!("readOnly" in fieldSchema) || !fieldSchema.readOnly) {
+      return {};
+    } else {
+      return { InputProps: { readOnly: true }, disabled: true };
+    }
+  }, [fieldSchema]);
   return (
     <TextField
       aria-label={fieldSchema.label}
@@ -21,6 +28,7 @@ export default function DateTimeField({
       size="small"
       sx={{ mt: "10px", ...sx }}
       error={!isValid}
+      {...readOnlyProps}
       {...rest}
     />
   );

@@ -1,7 +1,7 @@
-import { useMemo } from "react";
-import PropTypes from "prop-types";
 import { TextField as MuiTextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import PropTypes from "prop-types";
+import { useMemo } from "react";
 import { useValidateField } from "../../hooks/useValidateField";
 
 const SecondaryTextField = styled(MuiTextField)({
@@ -31,6 +31,14 @@ export default function TextField({
     }
   }, [fieldSchema]);
 
+  const readOnlyProps = useMemo(() => {
+    if (!("readOnly" in fieldSchema) || !fieldSchema.readOnly) {
+      return {};
+    } else {
+      return { InputProps: { readOnly: true }, disabled: true };
+    }
+  }, [fieldSchema]);
+
   const isValid = useValidateField(fieldSchema, value);
 
   const Field =
@@ -47,6 +55,7 @@ export default function TextField({
       sx={{ mt: "10px", ...sx }}
       error={!isValid}
       {...multilineProps}
+      {...readOnlyProps}
       {...rest}
     />
   );

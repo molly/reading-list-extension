@@ -23,7 +23,7 @@ import { validate } from "../schemas/validate";
 import Form from "./Form";
 
 import { signout } from "../api/auth";
-import { addEntry } from "../api/entry";
+import { addEntry, lookupBook } from "../api/entry";
 
 const OnDarkSelect = styled(Select)({
   "& .MuiSelect-select": {
@@ -42,7 +42,6 @@ const OnDarkButton = styled(Button)({
 export default function NewEntry({ setIsLoggedIn }) {
   const [prefillData, setPrefillData] = useState(null);
   const [allTags, setAllTags] = useState(null);
-
   const [bookTags, setBookTags] = useState(null);
   const [collection, setCollection] = useState("shortform");
   const [formData, setFormData] = useState(null);
@@ -57,13 +56,36 @@ export default function NewEntry({ setIsLoggedIn }) {
     getPrefillData().then((data) => {
       let _collection = "shortform";
       if (data.collection === "book") {
-        _collection = "book";
-        setCollection("book");
-        initialFormData = copy(EMPTY_FORM_DATA["book"]);
+        lookupBook({ title: data.title, author: data.author })
+          .then((lookupData) => {
+            if (lookupData.error) {
+              // No existing book, create a new one
+              _collection = "book";
+              setCollection("book");
+              initialFormData = copy(EMPTY_FORM_DATA[_collection]);
+              setPrefillData(data);
+              const filteredPrefillData = filterPrefillData(data, _collection);
+              setFormData({ ...initialFormData, ...filteredPrefillData });
+            } else {
+              _collection = "bookUpdate";
+              setCollection("bookUpdate");
+              initialFormData = copy(EMPTY_FORM_DATA[_collection]);
+              initialFormData.id = lookupData.data.id;
+              setPrefillData(lookupData.data);
+              const filteredPrefillData = filterPrefillData(
+                lookupData.data,
+                _collection
+              );
+              setFormData({ ...initialFormData, ...filteredPrefillData });
+            }
+          })
+          .catch((err) => {
+            // 404 means we need to create a new book
+            setPrefillData(data);
+            const filteredPrefillData = filterPrefillData(data, _collection);
+            setFormData({ ...initialFormData, ...filteredPrefillData });
+          });
       }
-      setPrefillData(data);
-      const filteredPrefillData = filterPrefillData(data, _collection);
-      setFormData({ ...initialFormData, ...filteredPrefillData });
     });
     getTags().then((data) => {
       setAllTags(data.tags);
@@ -149,6 +171,15 @@ export default function NewEntry({ setIsLoggedIn }) {
     }
   };
 
+  const getBarColor = (_collection) => {
+    if (_collection === "shortform") {
+      return "primary";
+    } else if (_collection === "book" || _collection === "bookUpdate") {
+      return "secondary";
+    }
+    return "success";
+  };
+
   if (isLoading) {
     return (
       <Box
@@ -188,23 +219,16 @@ export default function NewEntry({ setIsLoggedIn }) {
       </Box>
     );
   }
+
   return (
     <Box sx={{ margin: 2 }}>
       <FormControl fullWidth size="small">
-        <AppBar
-          color={
-            collection === "shortform"
-              ? "primary"
-              : collection === "book"
-                ? "secondary"
-                : "success"
-          }
-        >
+        <AppBar color={getBarColor(collection)}>
           <Toolbar sx={{ justifyContent: "space-between" }}>
             <OnDarkSelect
               labelId="reading-list-type-label"
               id="reading-list-type"
-              value={collection}
+              value={collection === "bookUpdate" ? "book" : collection}
               label="Reading list"
               MenuProps={{ MenuListProps: { dense: true } }}
               onChange={({ target: { value } }) => changeCollectionType(value)}
