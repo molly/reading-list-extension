@@ -80,11 +80,12 @@ export default function NewEntry({ setIsLoggedIn }) {
             }
           })
           .catch((err) => {
-            // 404 means we need to create a new book
-            setPrefillData(data);
-            const filteredPrefillData = filterPrefillData(data, _collection);
-            setFormData({ ...initialFormData, ...filteredPrefillData });
+            console.error(err);
           });
+      } else {
+        setPrefillData(data);
+        const filteredPrefillData = filterPrefillData(data, collection);
+        setFormData({ ...initialFormData, ...filteredPrefillData });
       }
     });
     getTags().then((data) => {
